@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>Статистика</title>
+    <link rel="stylesheet" href="../css/a_statstyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="../js/preloader.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="header__body">
+                    <a class="header__logo" href="@Url.Action("Account","Admin")">
+                        <img src="../img/Service/logo.png">
+                    </a>
+                    <div>
+                        <span class="header__name_my">МОЯ</span><span class="header__name_asp">АСПИРАНТУРА</span>
+                    </div>
+                    <details class="detail__body" data-toggle="dropdown">
+                        <summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"><span
+								class="caret" id="caret"></span></summary>
+                        <nav class="header__menu">
+                            <ul class="header__list">
+                                <li>
+                                    <a href="@Url.Action("Account", "Admin")" class="header__link">Личный кабинет</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Asps", "Admin")" class="header__link">Аспиранты</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Docs", "Admin")" class="header__link">Документы</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Grants", "Admin")" class="header__link">Стипендии</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Timetable", "Admin")" class="header__link">Расписания</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Contacts", "Admin")" class="header__link">Контакты</a>
+                                </li>
+                                @if (ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+                                {
+                                <li>
+									<a href="@Url.Action("Statistics", "AdminPanel")" class="header__link">Статистика</a>
+                                </li>
+                                }
+                                <li>
+                                    <a href="@Url.Action("Logout", "Admin")" class="header__link">Выйти</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </details>
+                </div>
+            </div>
+        </header>
+        <div class="content">
+            <div class="container">
+                <div class="content_text">
+                    <div class="tabs">
+                        <button class="tab-link" onclick="openTab(event, 'tab1')">Аспиранты</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab2')">Администраторы</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab3')">Стипендии</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab4')">Оценки</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab5')">Расписания</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab6')">Достижения</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab7')">Документы</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab8')">Науч. рук-и</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab9')">Направления подг.</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab10')">Новости</button>
+                        <button class="tab-link" onclick="openTab(event, 'tab11')">Менеджер фото</button>
+                      </div>
+
+                      <div id="tab1" class="tab-content">
+                        <h2>Аспиранты</h2>
+                        <div class="top-btn">
+                            <button type="button" class="btn_style" onclick="location.href='#addprofpopup'">Добавить</button>
+                        </div>
+                        <div class="table-container">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Логин</th>
+                                <th>ФИО</th>
+                                <th>Номер удост.</th>
+                                <th>Номер Группы</th>
+                                <th>Направление подг.</th>
+                                <th>Профиль подг.</th>
+                                <th>Тема работы</th>
+                                <th>Научный рук.</th>
+                                <th>Телефон</th>
+                                <th>Почта</th>
+                                <th>Запрос сброса пароля</th>
+                                <th>Действия</th>
+                              </tr>
+                            </thead>
+                            @foreach (var asp in ViewBag.Asps)
+                            {
+                              <tbody>
+                                <form asp-action="DeleteAsp" asp-controller="AdminPanel">
+                                    <td id="id">@asp.Id</td>
+                                    <td id="login">@asp.Login</td>
+                                    <td id="FIO">@asp.Surname @asp.Name @if (asp.Patronymic != null) @asp.Patronymic</td>
+                                    <td id="cnumber">@asp.CNumber</td>
+                                    <td id="gnumber">@asp.GNumber</td>
+                                    <td id="stDir">@asp.StDirection</td>
+                                    <td id="stProf">@asp.ProfDirection</td>
+                                    <td id="theme">@asp.WTheme</td>
+                                    <td id="scientist">@asp.ScientistID</td>
+                                    <td id="tel">@asp.Phone</td>
+                                    <td id="email">@asp.Email</td>
+                                    <td>@asp.RequestTime</td>
+                                    <td>
+                                      <input type="hidden" class="index" value="@(ViewBag.Asps.IndexOf(asp))">
+                                      <input type="hidden" name="id" value="@asp.Id">
+                                      <button class="btn_style btn_small" type="button" onclick="editProf(this)">Изменить</button>
+                                      <button class="btn_style btn_small delete" type="button" onclick="if(confirm('Уверены?')){ this.form.submit(); }">Удалить</button>
+                                    </td>
+                                  </form>
+                                </tbody>
+                            }
+                          </table>
+                        </div>
+                      </div>
+                      <div id="tab2" class="tab-content">
+                        <h2>Администраторы</h2>
+                        <div class="top-btn">
+                            <button type="button" class="btn_style" onclick="location.href='#addadminpopup'">Добавить</button>
+                        </div>
+                          <div class="table-container">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>ID</th>
+                                  <th>Логин</th>
+                                  <th>ФИО</th>
+                                  <th>Должность</th>
+                                  <th>Кабинет</th>
+                                  <th>Телефон</th>
+                                  <th>Почта</th>
+                                  <th>Уровень доступа</th>
+                                  <th>Действия</th>
+                                </tr>
+                              </thead>
+                              @foreach (var adm in ViewBag.Adms)
+                              {
+                                <tbody>
+                                  <form asp-action="DeleteAdmin" asp-controller="AdminPanel">
+                                    <td id="id">@adm.Id</td>
+                                    <td id="login">@adm.Login</td>
+                                    <td id="FIO">@adm.Surname @adm.Name @if (adm.Patronymic != null) @adm.Patronymic</td>
+                                    <td id="function">@adm.Function</td>
+                                    <td id="cab">@adm.Cabinet</td>
+                                    <td id="tel">@adm.Phone</td>
+                                    <td id="mail">@adm.Email</td>
+                                    <td id="roleLvl">@adm.Role</td>
+                                    <td>
+                                      <input type="hidden" class="index" value="@(ViewBag.Adms.IndexOf(adm))">
+                                      <input type="hidden" name="id" value="@adm.Id">
+                                      <button class="btn_style btn_small" type="button" onclick="editAdm(this)">Изменить</button>
+                                      <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                                    </td>
+                                  </form>
+                                </tbody>
+                              }
+                          </table>
+                        </div>
+                      </div>
+                      <div id="tab3" class="tab-content">
+                        <h2>Стипендии</h2>
+                        <div class="top-btn">
+                            <button type="button" class="btn_style" onclick="location.href='#addstippopup'">Добавить</button>
+                        </div>
+                          <div class="table-container">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th hidden>ID</th>
+                                  <th>Наименование</th>
+                                  <th>Размер</th>
+                                  <th>Дата начала</th>
+                                  <th>Дата конца</th>
+                                  <th>ID аспиранта</th>
+                                  <th>Действия</th>
+                                </tr>
+                              </thead>
+                              @foreach (var grant in ViewBag.Grants)
+                              {
+                                <tbody>
+                                  <form asp-action="DeleteGrant" asp-controller="AdminPanel">
+                                    <td id="id" hidden>@grant.Id</td>
+                                    <td id="name">@grant.Name</td>
+                                    <td id="amount">@grant.Amount</td>
+                                    <td id="startDate">@grant.StartDate</td>
+                                    <td id="endDate">@grant.ExpiryDate</td>
+                                    <td id="aspId">@grant.UserID</td>
+                                    <td>
+                                      <input type="hidden" class="index" value="@(ViewBag.Grants.IndexOf(grant))">
+                                      <input type="hidden" name="id" value="@grant.Id">
+                                      <button class="btn_style btn_small" type="button" onclick="editStip(this)">Изменить</button>
+                                      <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                                    </td>
+                                  </form>
+                                </tbody>
+                              }
+                          </table>
+                        </div>
+                      </div>
+                      <div id="tab4" class="tab-content">
+                        <h2>Оценки</h2>
+                        <div class="top-btn">
+                            <button type="button" class="btn_style" onclick="location.href='#addrespopup'">Добавить</button>
+                        </div>
+                        <div class="table-container">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th hidden>ID</th>
+                                <th>Предмет</th>
+                                <th>Оценка</th>
+                                <th>Тип сдачи</th>
+                                <th>Дата</th>
+                                <th>ID аспиранта</th>
+                                <th>Действия</th>
+                              </tr>
+                            </thead>
+                            @foreach (var res in ViewBag.Results)
+                            {
+                              <tbody>
+                                <form asp-action="DeleteResult" asp-controller="AdminPanel">
+                                  <td id="id" hidden>@res.Id</td>
+                                  <td id="subj">@res.SubjName</td>
+                                  <td id="result">@res.Grade</td>
+                                  <td id="type">@res.Type</td>
+                                  <td id="date">@res.Date</td>
+                                  <td id="aspId">@res.UserID</td>
+                                  <td>
+                                    <input type="hidden" class="index" value="@(ViewBag.Results.IndexOf(res))">
+                                    <input type="hidden" name="id" value="@res.Id">
+                                    <button class="btn_style btn_small" type="button" onclick="editRes(this)">Изменить</button>
+                                    <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                                  </td>
+                                </form>
+                              </tbody>
+                            }
+                          </table>
+                        </div>
+                      </div>
+                      <div id="tab5" class="tab-content">
+                        <h2>Расписания</h2>
+                        <div class="table-container">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th hidden>ID</th>
+                                <th>Имя файла</th>
+                                <th>Дата</th>
+                                <th>Тип расписания</th>
+                                <th>Действия</th>
+                              </tr>
+                            </thead>
+                            @foreach (var timet in ViewBag.Timetables)
+                            {
+                              <tbody>
+                                <form asp-action="DeleteTimetable" asp-controller="AdminPanel">
+                                  <td id="id" hidden>@timet.Id</td>
+                                  <td id="name">@timet.Name</td>
+                                  <td id="date">@timet.Date</td>
+                                  <td id="type">@timet.Type</td>
+                                  <td>
+                                    <input type="hidden" class="index" value="@(ViewBag.Timetables.IndexOf(timet))">
+                                    <input type="hidden" name="id" value="@timet.Id">
+                                    <button class="btn_style btn_small" type="button" onclick="editTimet(this)">Изменить</button>
+                                    <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                                  </td>
+                                </form>
+                              </tbody>
+                            }
+                          </table>
+                        </div>
+                      </div>
+                      <div id="tab6" class="tab-content">
+                        <h2>Достижения</h2>
+                        <div class="table-container">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th hidden>ID</th>
+                                <th>Название</th>
+                                <th>Дата</th>
+                                <th>ID аспиранта</th>
+                                <th>Действия</th>
+                              </tr>
+                            </thead>
+                            @foreach (var achiev in ViewBag.Achievments)
+                            {
+                              <tbody>
+                                <form asp-action="DeleteAchievment" asp-controller="AdminPanel">
+                                  <td id="id" hidden>@achiev.Id</td>
+                                  <td id="name">@achiev.Name</td>
+                                  <td id="date">@achiev.Date</td>
+                                  <td id="aspId">@achiev.UserID</td>
+                                  <td>
+                                    <input type="hidden" class="index" value="@(ViewBag.Achievments.IndexOf(achiev))">
+                                    <input type="hidden" name="id" value="@achiev.Id">
+                                    <button class="btn_style btn_small" type="button" onclick="editAchiev(this)">Изменить</button>
+                                    <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                                  </td>
+                                </form>
+                              </tbody>
+                            }
+                          </table>
+                        </div>
+                    </div>
+                    <div id="tab7" class="tab-content">
+                      <h2>Документы</h2>
+                      <div class="table-container">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th hidden>ID</th>
+                              <th>Название</th>
+                              <th>Дата</th>
+                              <th>ID аспиранта</th>
+                              <th>Действия</th>
+                            </tr>
+                          </thead>
+                                @foreach (var doc in ViewBag.Docs)
+                                {
+                                  <tbody>
+                                      <form asp-action="DeleteDoc" asp-controller="AdminPanel">
+                                      <td id="id" hidden>@doc.Id</td>
+                                      <td id="name">@doc.Name</td>
+                                      <td id="date">@doc.Date</td>
+                                      <td id="aspId">@doc.UserID</td>
+                                      <td>
+                                        <input type="hidden" class="index" value="@(ViewBag.Docs.IndexOf(doc))">
+                                        <input type="hidden" name="id" value="@doc.Id">
+                                        <button class="btn_style btn_small" type="button" onclick="editDoc(this)">Изменить</button>
+                                        <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                                      </td>
+                                      </form>
+                                  </tbody>
+                                }
+                        </table>
+                      </div>
+                    </div>
+                <div id="tab8" class="tab-content">
+                  <h2>Науч. рук-и</h2>
+                  <div class="top-btn">
+                    <button type="button" class="btn_style" onclick="location.href='#addsciencepopup'">Добавить</button>
+                  </div>
+                  <div class="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th hidden>ID</th>
+                          <th>ФИО</th>
+                          <th>Почта</th>
+                          <th>Телефон</th>
+                          <th>Уч. степень</th>
+                          <th>Кафедра</th>
+                          <th>Действия</th>
+                        </tr>
+                      </thead>
+                      @foreach (var scient in ViewBag.Scientists)
+                      {
+                        <tbody>
+                          <form asp-action="DeleteScientist" asp-controller="AdminPanel">
+                            <td id="id" hidden>@scient.Id</td>
+                            <td id="FIO">@scient.Name</td>
+                            <td id="mail">@scient.Email</td>
+                            <td id="tel">@scient.Phone</td>
+                            <td id="degree">@scient.Degree</td>
+                            <td id="depart">@scient.Department</td>
+                            <td>
+                              <input type="hidden" class="index" value="@(ViewBag.Scientists.IndexOf(scient))">
+                              <input type="hidden" name="id" value="@scient.Id">
+                              <button class="btn_style btn_small" type="button" onclick="editScience(this)">Изменить</button>
+                              <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                            </td>
+                          </form>
+                        </tbody>
+                      }
+                    </table>
+                  </div>
+                </div>
+                <div id="tab9" class="tab-content">
+                  <h2>Направления подг.</h2>
+                  <div class="top-btn">
+                    <button type="button" class="btn_style" onclick="location.href='#adddirectpopup'">Добавить</button>
+                  </div>
+                  <div class="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th hidden>ID</th>
+                          <th>Название</th>
+                          <th>Профиль подг.</th>
+                          <th>Кафедра</th>
+                          <th>Действия</th>
+                        </tr>
+                      </thead>
+                      @foreach (var direct in ViewBag.Directions)
+                      {
+                        <tbody>
+                          <form asp-action="DeleteDirection" asp-controller="AdminPanel">
+                            <td id="id" hidden>@direct.Id</td>
+                            <td id="name">@direct.Name</td>
+                            <td id="prof">@direct.Profile</td>
+                            <td id="depart">@direct.Department</td>
+                            <td>
+                              <input type="hidden" class="index" value="@(ViewBag.Directions.IndexOf(direct))">
+                              <input type="hidden" name="id" value="@direct.Id">
+                              <button class="btn_style btn_small" type="button" onclick="editDirection(this)">Изменить</button>
+                              <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                            </td>
+                          </form>
+                        </tbody>
+                      }
+                    </table>
+                  </div>
+                </div>
+                <div id="tab10" class="tab-content">
+                  <h2>Новости</h2>
+                  <div class="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th hidden>ID</th>
+                          <th>Информация</th>
+                          <th>Ссылка</th>
+                          <th>Дата</th>
+                          <th>Действия</th>
+                        </tr>
+                      </thead>
+                      @foreach (var news in ViewBag.News)
+                      {
+                        <tbody>
+                          <form asp-action="DeleteNew" asp-controller="AdminPanel">
+                            <td id="id" hidden>@news.Id</td>
+                            <td id="info">@news.Info</td>
+                            <td id="link">@news.Link</td>
+                            <td id="date">@news.Date</td>
+                            <td>
+                              <input type="hidden" class="index" value="@(ViewBag.News.IndexOf(news))">
+                              <input type="hidden" name="id" value="@news.Id">
+                              <button class="btn_style btn_small" type="button" onclick="editNew(this)">Изменить</button>
+                              <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                            </td>
+                          </form>
+                        </tbody>
+                      }
+                    </table>
+                  </div>
+                </div>
+                <div id="tab11" class="tab-content">
+                  <h2>Менеджер фото</h2>
+                  <div class="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th hidden>ID</th>
+                          <th>Файл</th>
+                          <th>Дата</th>
+                          <th>ID Аспиранта</th>
+                          <th>Действия</th>
+                        </tr>
+                      </thead>
+                      @foreach (var pm in ViewBag.PM)
+                      {
+                        <tbody>
+                          <form asp-action="DeletePM" asp-controller="AdminPanel">
+                            <td id="id" hidden>@pm.Id</td>
+                            <td id="file">@pm.File</td>
+                            <td id="date">@pm.Date</td>
+                            <td id="aspid">@pm.UserID</td>
+                            <td>
+                              <input type="hidden" class="index" value="@(ViewBag.PM.IndexOf(pm))">
+                              <input type="hidden" name="id" value="@pm.Id">
+                              <button class="btn_style btn_small" type="button" onclick="editPM(this)">Изменить</button>
+                              <button class="btn_style btn_small delete" type="submit" onclick="return confirm('Уверены?')">Удалить</button>
+                            </td>
+                          </form>
+                        </tbody>
+                      }
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+
+                <div id="profpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateAsp" asp-controller="AdminPanel">
+                            <div>ФИО</div>
+                            <input class="popup_input" type="text" name="FIO" id="FIO" placeholder="ФИО">
+                            <div>Номер удост.</div>
+                            <input class="popup_input" type="text" name="cnumber" id="cnumber" placeholder="Номер удост.">
+                            <div>Номер группы</div>
+                            <input class="popup_input" type="text" name="gnumber" id="gnumber" placeholder="Номер группы">
+                            <div>Направление подг.</div>
+                            <input class="popup_input" type="text" name="stDir" id="stDir" placeholder="Направление подг.">
+                            <div>Профиль подг.</div>
+                            <input class="popup_input" type="text" name="stProf" id="stProf" placeholder="Профиль подг.">
+                            <div>Тема работы</div>
+                            <input class="popup_input" type="text" name="theme" id="theme" placeholder="Тема работы">
+                            <div>Науч. рук.</div>
+                            <input class="popup_input" type="text" name="scientist" id="scientist" placeholder="Науч. рук.">
+                            <div>Телефон</div>
+                            <input class="popup_input" type="tel" name="tel" id="tel" placeholder="Телефон">
+                            <div>Почта</div>
+                            <input class="popup_input" type="email" name="mail" id="mail" placeholder="Электронная почта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="adminpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateAdmin" asp-controller="AdminPanel">
+                            <div>ФИО</div>
+                            <input class="popup_input" type="text" name="FIO" id="FIO" placeholder="ФИО">
+                            <div>Должность</div>
+                            <input class="popup_input" type="text" name="function" id="function" placeholder="Должность">
+                            <div>Кабинет</div>
+                            <input class="popup_input" type="text" name="cab" id="cab" placeholder="Кабинет">
+                            <div>Уровень доступа</div>
+                            <input class="popup_input" type="text" name="roleLvl" id="roleLvl" placeholder="Уровень доступа">
+                            <div>Телефон</div>
+                            <input class="popup_input" type="tel" name="tel" id="tel" placeholder="Телефон">
+                            <div>Почта</div>
+                            <input class="popup_input" type="email" name="mail" id="mail" placeholder="Электронная почта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="stippopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateGrant" asp-controller="AdminPanel">
+                            <div>Название</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
+                            <div>Размер</div>
+                            <input class="popup_input" type="text" name="amount" id="amount" placeholder="Размер">
+                            <div>Дата начала</div>
+                            <input class="popup_input" type="text" name="startDate" id="startDate" placeholder="Дата начала">
+                            <div>Дата конца</div>
+                            <input class="popup_input" type="text" name="endDate" id="endDate" placeholder="Дата конца">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspId" id="aspId" placeholder="ID аспиранта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="respopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateResult" asp-controller="AdminPanel">
+                            <div>Предмет</div>
+                            <input class="popup_input" type="text" name="subj" id="subj" placeholder="Предмет">
+                            <div>Оценка</div>
+                            <input class="popup_input" type="text" name="result" id="result" placeholder="Оценка">
+                            <div>Тип сдачи</div>
+                            <input class="popup_input" type="text" name="type" id="type" placeholder="Тип сдачи">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspId" id="aspId" placeholder="ID аспиранта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="timetpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateTimetable" asp-controller="AdminPanel">
+                            <div>Имя файла</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Имя файла">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <div>Тип</div>
+                            <input class="popup_input" type="text" name="type" id="type" placeholder="Тип">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="achievpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateAchievment" asp-controller="AdminPanel">
+                            <div>Название</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspId" id="aspId" placeholder="ID аспиранта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="docpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateDocument" asp-controller="AdminPanel">
+                            <div>Название</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspId" id="aspId" placeholder="ID аспиранта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="sciencepopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateScientist" asp-controller="AdminPanel">
+                            <div>ФИО</div>
+                            <input class="popup_input" type="text" name="FIO" id="FIO" placeholder="ФИО">
+                            <div>Уч. степень</div>
+                            <input class="popup_input" type="text" name="degree" id="degree" placeholder="Уч. степень">
+                            <div>Кафедра</div>
+                            <input class="popup_input" type="text" name="depart" id="depart" placeholder="Кафедра">
+                            <div>Телефон</div>
+                            <input class="popup_input" type="text" name="tel" id="tel" placeholder="Телефон">
+                            <div>Почта</div>
+                            <input class="popup_input" type="text" name="mail" id="mail" placeholder="Почта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="directpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateDirection" asp-controller="AdminPanel">
+                            <div>Название</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
+                            <div>Профиль</div>
+                            <input class="popup_input" type="text" name=""prof id="prof" placeholder="Профиль">
+                            <div>Кафедра</div>
+                            <input class="popup_input" type="text" name="depart" id="depart" placeholder="Кафедра">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="newspopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdateNews" asp-controller="AdminPanel">
+                            <div>Инфо</div>
+                            <input class="popup_input" type="text" name="info" id="info" placeholder="Инфо">
+                            <div>Ссылка</div>
+                            <input class="popup_input" type="text" name="link" id="link" placeholder="Ссылка">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="pmpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="UpdatePM" asp-controller="AdminPanel">
+                            <div>Файл</div>
+                            <input class="popup_input" type="text" name="file" id="file" placeholder="Файл">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspid" id="aspid" placeholder="ID Аспиранта">
+                            <input hidden type="text" name="id" id="id">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <div id="addprofpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="AddAsp" asp-controller="AdminPanel">
+                            <div>ФИО</div>
+                            <input class="popup_input" type="text" name="FIO" id="FIO" placeholder="ФИО">
+                            <div>Номер удост.</div>
+                            <input class="popup_input" type="text" name="cnumber" id="cnumber" placeholder="Номер удост.">
+                            <div>Номер группы</div>
+                            <input class="popup_input" type="text" name="gnumber" id="gnumber" placeholder="Номер группы">
+                            <div>Направление подг.</div>
+                            <input class="popup_input" type="text" name="stDir" id="stDir" placeholder="Направление подг.">
+                            <div>Профиль подг.</div>
+                            <input class="popup_input" type="text" name="stProf" id="stProf" placeholder="Профиль подг.">
+                            <div>Тема работы</div>
+                            <input class="popup_input" type="text" name="theme" id="theme" placeholder="Тема работы">
+                            <div>Науч. рук.</div>
+                            <input class="popup_input" type="text" name="scientist" id="scientist" placeholder="Науч. рук.">
+                            <div>Телефон</div>
+                            <input class="popup_input" type="tel" name="tel" id="tel" placeholder="Телефон">
+                            <div>Почта</div>
+                            <input class="popup_input" type="email" name="mail" id="mail" placeholder="Электронная почта">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="addadminpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="AddAdmin" asp-controller="AdminPanel">
+                            <div>ФИО</div>
+                            <input class="popup_input" type="text" name="FIO" id="FIO" placeholder="ФИО">
+                            <div>Должность</div>
+                            <input class="popup_input" type="text" name="function" id="function" placeholder="Должность">
+                            <div>Кабинет</div>
+                            <input class="popup_input" type="text" name="cab" id="cab" placeholder="Кабинет">
+                            <div>Уровень доступа</div>
+                            <select class="popup_input" name="roleLvl" id="roleLvl" placeholder="Выберите уровень доступа">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                            <div>Телефон</div>
+                            <input class="popup_input" type="tel" name="tel" id="tel" placeholder="Телефон">
+                            <div>Почта</div>
+                            <input class="popup_input" type="email" name="mail" id="mail" placeholder="Электронная почта">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="addstippopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="AddGrant" asp-controller="AdminPanel">
+                            <div>Название</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
+                            <div>Размер</div>
+                            <input class="popup_input" type="text" name="amount" id="amount" placeholder="Размер">
+                            <div>Дата начала</div>
+                            <input class="popup_input" type="text" name="startDate" id="startDate" placeholder="Дата начала">
+                            <div>Дата конца</div>
+                            <input class="popup_input" type="text" name="endDate" id="endDate" placeholder="Дата конца">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspId" id="aspId" placeholder="ID аспиранта">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="addrespopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="AddResult" asp-controller="AdminPanel">
+                            <div>Предмет</div>
+                            <input class="popup_input" type="text" name="subj" id="subj" placeholder="Предмет">
+                            <div>Оценка</div>
+                            <input class="popup_input" type="text" name="result" id="result" placeholder="Оценка">
+                            <div>Тип сдачи</div>
+                            <input class="popup_input" type="text" name="type" id="type" placeholder="Тип сдачи">
+                            <div>Дата</div>
+                            <input class="popup_input" type="text" name="date" id="date" placeholder="Дата">
+                            <div>ID аспиранта</div>
+                            <input class="popup_input" type="text" name="aspId" id="aspId" placeholder="ID аспиранта">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="addsciencepopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="AddScientist" asp-controller="AdminPanel">
+                            <div>ФИО</div>
+                            <input class="popup_input" type="text" name="FIO" id="FIO" placeholder="ФИО">
+                            <div>Уч. степень</div>
+                            <input class="popup_input" type="text" name="degree" id="degree" placeholder="Уч. степень">
+                            <div>Кафедра</div>
+                            <input class="popup_input" type="text" name="depart" id="depart" placeholder="Кафедра">
+                            <div>Телефон</div>
+                            <input class="popup_input" type="text" name="tel" id="tel" placeholder="Телефон">
+                            <div>Почта</div>
+                            <input class="popup_input" type="text" name="mail" id="mail" placeholder="Почта">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="adddirectpopup" class="popup">
+                  <a href="#header" class="popup_area"></a>
+                  <div class="popup_body">
+                    <div class="popup_content">
+                      <a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+                        <div class="popup_buttons">
+                          <form asp-action="AddDirection" asp-controller="AdminPanel">
+                            <div>Название</div>
+                            <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
+                            <div>Профиль</div>
+                            <input class="popup_input" type="text" name=""prof id="prof" placeholder="Профиль">
+                            <div>Кафедра</div>
+                            <input class="popup_input" type="text" name="depart" id="depart" placeholder="Кафедра">
+                            <button class="submit" onclick="location.href='#header'">Сохранить</button>
+                          </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+    <script src="../js/stat_script.js"></script>
+
+</html>

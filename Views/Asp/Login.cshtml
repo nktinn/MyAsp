@@ -1,0 +1,37 @@
+@model MyAsp.Models.LoginModel;
+
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Вход в систему</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../css/loginstyle.css">
+		<script  src="../js/preloader.js" type="text/javascript"></script>
+	</head>
+	<body>
+
+		<div class="preloader">
+    		<div class="preloader__row">
+      			<div class="preloader__item"></div>
+      			<div class="preloader__item"></div>
+    		</div>
+  		</div>
+  		
+		<div class="stankin_logo">
+			<div class="content">
+				<div class="title_my_asp"><span class="title_my">МОЯ</span> <span class="title_asp">АСПИРАНТУРА</span></div>
+				<p class="title_enter">Вход</p>
+				<form asp-action="Login" asp-controller="Asp" asp-anti-forgery="true">
+						<input class="title_input" type="text" asp-for="Login" placeholder="Логин">
+					<div>
+						<input class="title_input" type="password" asp-for="Password" placeholder="Пароль">
+						<span asp-validation-for="ModelError" class="text-danger"></span>
+					</div>
+					<button class="title_enter_button" type="submit">Войти</button><span onclick="location.href='@Url.Action("Restore", "Asp")'" class="title_forgot_pass pointer" onclick="">Забыли пароль?</span>
+				</form>
+				<button class="title_enters_button" onclick="location.href='@Url.Action("Login", "Admin")'">Вход для сотрудников</button>
+			</div>
+		</div>
+	</body>
+</html>

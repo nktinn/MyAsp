@@ -1,0 +1,627 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
+/*Обнуление*/
+*, *:before, *:after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  max-width: 100%;
+}
+
+/*Preloader*/
+.preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: 1001;
+}
+
+.preloader__row {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  margin-top: -35px;
+  margin-left: -35px;
+  text-align: center;
+  animation: preloader-rotate 1s infinite linear;
+}
+
+.preloader__item {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  background-color: #337ab7;
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  animation: preloader-bounce 2s infinite ease-in-out;
+}
+
+.preloader__item:last-child {
+  top: auto;
+  bottom: 0;
+  animation-delay: -1s;
+}
+@keyframes preloader-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes preloader-bounce {
+  0%, 100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+.loaded_hiding .preloader {
+  transition: 0.3s opacity;
+  opacity: 0;
+}
+
+.loaded .preloader {
+  display: none;
+}
+
+/*Content*/
+.stankin_logo {
+    background-image: url(../img/Service/logobacksmaller.webp);
+    background-repeat: no-repeat;
+    height: 100%;
+    background-position: 101% 100%;
+    background-size: 55%;
+    z-index: 2;
+}
+
+.content {
+  padding-top: 10%;
+  max-width: 579px;
+  max-height: auto;
+  margin: 0px auto;
+}
+
+.title_my_asp {
+  display: flex;
+  width: 100%;
+}
+
+.title_my {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 52px;
+  color: #1400FF;
+  padding: 0;
+  margin: 0;
+}
+
+.title_asp {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 52px;
+  color: #FF0000;
+  margin-left: 6px;
+  padding: 0;
+}
+
+.title_adm {
+  text-align: right;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 20px;
+  margin-top: -10px;
+  color: #FF0000;
+}
+
+.title_enter {
+  margin-top: 10%;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 45px;
+  line-height: 70px;
+}
+
+.title_input {
+  padding-left: 20px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 35px;
+  color: black;
+  background: #D9D9D9;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  outline: none;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.title_enter_button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 50px;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0px 20px;
+  background: #FF6B6B;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.title_enter_button:hover {
+  transition: all 0.4s ease-in-out;
+  background: rgba(255, 107, 107, 0.8078431373);
+  color: rgb(248, 248, 248);
+}
+
+.title_enters_button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 40px;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0px 20px;
+  background: white;
+  margin-top: 15px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.title_enters_button:hover {
+  background: #F6F6F6;
+  transition: all 0.4s ease-in-out;
+}
+
+.title_forgot_pass {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 23px;
+  color: rgba(0, 0, 0, 0.3);
+  padding: 0px 30px;
+  cursor: help;
+}
+
+.text-danger {
+    display: block;
+    font-family: "Roboto", sans-serif;
+    color: lightcoral;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.text-success {
+    display: block;
+    font-family: "Roboto", sans-serif;
+    color: lightgreen;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.down_menu{
+    display: none;
+    margin-bottom: 15px;
+}
+
+.blocked {
+    display: block;
+    background-color: #fafafa;
+    border-radius: 8px;
+    padding: 20px;
+    padding-top: 0px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.small {
+    font-size: 35px;
+}
+
+[tooltip] {
+    position: relative;
+}
+
+[tooltip]::before,
+[tooltip]::after {
+  text-transform: none;
+  font-size: 17px;
+  line-height: 1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  display: none;
+  opacity: 0;
+}
+
+[tooltip]::before {
+  content: "";
+  border: 5px solid transparent;
+  z-index: 1001;
+}
+
+[tooltip]::after {
+  content: attr(tooltip);
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  min-width: 3em;
+  max-width: 21em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 1ch 1.5ch;
+  border-radius: 0.3ch;
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background: #333;
+  color: #fff;
+  z-index: 2;
+}
+
+[tooltip]:hover::before,
+[tooltip]:hover::after {
+  display: block;
+}
+
+[tooltip=""]::before,
+[tooltip=""]::after {
+  display: none !important;
+}
+
+[tooltip]:not([flow])::before,
+[tooltip][flow^=up]::before {
+  bottom: 100%;
+  border-bottom-width: 0;
+  border-top-color: #333;
+}
+
+[tooltip]:not([flow])::after,
+[tooltip][flow^=up]::after {
+  bottom: calc(100% + 5px);
+}
+
+[tooltip]:not([flow])::before,
+[tooltip]:not([flow])::after,
+[tooltip][flow^=up]::before,
+[tooltip][flow^=up]::after {
+  left: 50%;
+  transform: translate(-50%, -0.5em);
+}
+
+[tooltip][flow^=down]::before {
+  top: 100%;
+  border-top-width: 0;
+  border-bottom-color: #333;
+}
+
+[tooltip][flow^=down]::after {
+  top: calc(100% + 5px);
+}
+
+[tooltip][flow^=down]::before,
+[tooltip][flow^=down]::after {
+  left: 50%;
+  transform: translate(-50%, 0.5em);
+}
+
+[tooltip][flow^=left]::before {
+  top: 50%;
+  border-right-width: 0;
+  border-left-color: #333;
+  left: calc(0em - 5px);
+  transform: translate(-0.5em, -50%);
+}
+
+[tooltip][flow^=left]::after {
+  top: 50%;
+  right: calc(100% + 5px);
+  transform: translate(-0.5em, -50%);
+}
+
+[tooltip][flow^=right]::before {
+  top: 50%;
+  border-left-width: 0;
+  border-right-color: #333;
+  right: calc(0em - 5px);
+  transform: translate(0.5em, -50%);
+}
+
+[tooltip][flow^=right]::after {
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translate(0.5em, -50%);
+}
+@keyframes tooltips-vert {
+  to {
+    opacity: 0.9;
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes tooltips-horz {
+  to {
+    opacity: 0.9;
+    transform: translate(0, -50%);
+  }
+}
+[tooltip][flow^=up]:hover::before,
+[tooltip][flow^=up]:hover::after,
+[tooltip][flow^=down]:hover::before,
+[tooltip][flow^=down]:hover::after {
+  animation: tooltips-vert 400ms ease-out forwards;
+}
+
+[tooltip][flow^=left]:hover::before,
+[tooltip][flow^=left]:hover::after,
+[tooltip][flow^=right]:hover::before,
+[tooltip][flow^=right]:hover::after {
+  animation: tooltips-horz 400ms ease-out forwards;
+}
+
+@media (max-width: 1600px) {
+  .stankin_logo {
+    background-size: 55%;
+  }
+  .content {
+    padding-top: 10%;
+    max-width: 513px;
+    max-height: auto;
+    margin: 0px auto;
+  }
+  .title_my {
+    font-size: 46px;
+  }
+  .title_asp {
+    font-size: 46px;
+  }
+  .title_adm {
+    font-size: 22px;
+    margin-top: -10px;
+  }
+  .title_enter {
+    line-height: 50px;
+    font-size: 36px;
+  }
+  .title_input {
+    font-size: 26px;
+  }
+  .title_enter_button {
+    font-size: 26px;
+  }
+  .title_forgot_pass {
+    font-size: 22px;
+    padding: 0;
+  }
+  [tooltip]::after {
+    font-size: 18px;
+  }
+  .pointer {
+    padding: 0px 30px;
+  }
+  .down_menu {
+      display: block;
+  }
+}
+@media (max-width: 1100px) {
+  .stankin_logo {
+    background-size: 80%;
+  }
+}
+@media (max-width: 900px) {
+  .stankin_logo {
+    background-size: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .stankin_logo {
+    background-size: 100%;
+  }
+  .content {
+    padding-top: 10%;
+    max-width: 424px;
+    max-height: auto;
+    margin: 0px auto;
+  }
+  .title_my {
+    font-size: 38px;
+  }
+  .title_asp {
+    font-size: 38px;
+  }
+  .title_adm {
+    font-size: 18px;
+    margin-top: -10px;
+  }
+  .title_enter {
+    line-height: 50px;
+    font-size: 28px;
+  }
+  .title_input {
+    font-size: 25px;
+  }
+  .title_enter_button {
+    font-size: 25px;
+  }
+  [tooltip]::after {
+    font-size: 15px;
+  }
+}
+@media (max-width: 480px) {
+  .stankin_logo {
+    background-size: 100%;
+  }
+  .content {
+    padding-top: 20%;
+    max-width: 338px;
+    max-height: auto;
+    margin: 0px auto;
+  }
+  .title_my {
+    font-size: 30px;
+  }
+  .title_asp {
+    font-size: 30px;
+  }
+  .title_adm {
+    font-size: 14px;
+    margin-top: -6px;
+  }
+  .title_enter {
+    line-height: 40px;
+    font-size: 23px;
+  }
+  .title_input {
+    height: 45px;
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  .title_enters_button {
+    font-size: 20px;
+    line-height: 35px;
+  }
+  .title_enter_button {
+    line-height: 42px;
+    font-size: 20px;
+  }
+  .title_forgot_pass {
+    font-size: 17px;
+    line-height: 20px;
+  }
+  [tooltip]::after {
+    font-size: 13px;
+  }
+  .text-danger {
+      font-size: 13px;  
+  }
+  .text-success {
+      font-size: 13px;
+  }
+}
+@media (max-width: 380px) {
+  .stankin_logo {
+    background-size: 100%;
+  }
+  .content {
+    padding-top: 20%;
+    max-width: 292px;
+    max-height: auto;
+    margin: 0px auto;
+  }
+  .title_my {
+    font-size: 26px;
+  }
+  .title_asp {
+    font-size: 26px;
+  }
+  .title_adm {
+    font-size: 12px;
+    margin-top: -6px;
+  }
+  .title_enter {
+    line-height: 30px;
+    font-size: 20px;
+  }
+  .title_input {
+    height: 40px;
+    margin-bottom: 9px;
+    font-size: 17px;
+  }
+  .title_enters_button {
+    font-size: 17px;
+    line-height: 32px;
+  }
+  .title_enter_button {
+    line-height: 40px;
+    font-size: 17px;
+  }
+  .title_forgot_pass {
+    font-size: 15px;
+    line-height: 18px;
+  }
+  [tooltip]::after {
+    font-size: 12px;
+  }
+  .blocked {
+    padding: 10px;
+    padding-top: 0px;
+  }
+  .text-danger {
+      font-size: 12px;
+  }
+
+  .text-success {
+      font-size: 12px;
+  }
+}
+@media (max-width: 320px) {
+  .stankin_logo {
+    background-size: 100%;
+  }
+  .content {
+    padding-top: 20%;
+    max-width: 248px;
+    max-height: auto;
+    margin: 0px auto;
+  }
+  .title_my {
+    font-size: 22px;
+  }
+  .title_asp {
+    font-size: 22px;
+  }
+  .title_adm {
+    font-size: 12px;
+    margin-top: -6px;
+  }
+  .title_enter {
+    line-height: 30px;
+    font-size: 16px;
+  }
+  .title_input {
+    height: 37px;
+    margin-bottom: 9px;
+    font-size: 14px;
+  }
+  .title_enter_button {
+    line-height: 37px;
+    font-size: 14px;
+  }
+  .title_forgot_pass {
+    font-size: 13px;
+    line-height: 16px;
+  }
+  [tooltip]::after {
+    font-size: 10px;
+  }
+  .text-danger {
+      font-size: 11px;
+  }
+
+  .text-success {
+      font-size: 11px;
+  }
+}
+
+.pointer {
+    cursor: pointer;
+}

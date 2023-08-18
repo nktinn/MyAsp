@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<title>Стипендии</title>
+	<link rel="stylesheet" href="../css/a_grantsstyle.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	<script src="../js/preloader.js"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<header class="header">
+			<div class="container">
+				<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Admin")">
+						<img src="../img/Service/logo.png">
+					</a>
+					<div>
+						<span class="header__name_my">МОЯ</span><span class="header__name_asp">АСПИРАНТУРА</span>
+					</div>
+					<details class="detail__body" data-toggle="dropdown">
+						<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"><span
+								class="caret" id="caret"></span></summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account", "Admin")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Asps", "Admin")" class="header__link">Аспиранты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs", "Admin")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Grants", "Admin")" class="header__link">Стипендии</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable", "Admin")" class="header__link">Расписания</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts", "Admin")" class="header__link">Контакты</a>
+                                @if(ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+                                {
+								<li>
+									<a href="@Url.Action("Statistics", "AdminPanel")" class="header__link">Статистика</a>
+								</li>
+                                }
+								</li>
+								<li>
+									<a href="@Url.Action("Logout", "Admin")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<div class="container">
+				<div class="content_text">
+					<form form class="form_group" id="AddStip" asp-action="AddStip" asp-controller="Admin" style="margin-bottom:20px;" enctype="multipart/form-data">
+						<div class="stips">
+							<div class="stip_display">
+								<div class="stip_type stip" id="1">
+									<div class="stip_info">
+										<div class="stip_name">
+											Академическая стипенидия
+										</div>
+										<div class="stip_amount">Размер: <input name="academ_value" value="8600" class="stip_input v"></div>
+										<div class="stip_amount">До: <input name="academ_date" type="date" class="stip_input d"></div>
+									</div>
+									<div class="stip_check">
+										<img class="checkbox_img" src="../img/Service/vg.png">
+										<input type="checkbox" hidden>
+									</div>
+								</div>
+								<div class="stip_type stip" id="2">
+									<div class="stip_info">
+										<div class="stip_name">
+											Социальная стипендия
+										</div>
+										<div class="stip_amount">Размер: <input name="social_value" value="3200" class="stip_input v"></div>
+										<div class="stip_amount">До: <input name="social_date" type="date" class="stip_input d"></div>
+									</div>
+									<div class="stip_check">
+										<img class="checkbox_img" src="../img/Service/vg.png">
+										<input type="checkbox" hidden>
+									</div>
+								</div>
+								<div class="stip_type stip" id="3">
+									<div class="stip_info">
+										<div class="stip_name">
+											Правительственная стипендия
+										</div>
+										<div class="stip_amount">Размер: <input name="gov_value" value="10000" class="stip_input v"></div>
+										<div class="stip_amount">До: <input name="gov_date" type="date" class="stip_input d"></div>
+									</div>
+									<div class="stip_check">
+										<img class="checkbox_img" src="../img/Service/vg.png">
+										<input type="checkbox" hidden>
+									</div>
+								</div>
+							</div>
+							<div class="stip_display">
+								<div class="stip_type stip" id="4">
+									<div class="stip_info">
+										<div class="stip_name">
+											Президентская стипендия
+										</div>
+										<div class="stip_amount">Размер: <input name="president_value" value="14000" class="stip_input v"></div>
+										<div class="stip_amount">До: <input name="president_date" type="date" class="stip_input d"></div>
+									</div>
+									<div class="stip_check">
+										<img class="checkbox_img" src="../img/Service/vg.png">
+										<input type="checkbox" hidden>
+									</div>
+								</div>
+								<div class="stip_type stip" id="5">
+									<div class="stip_info">
+										<div class="stip_name">
+											Материальная выплата
+										</div>
+										<div class="stip_amount">Размер: <input name="support_value" value="5400" class="stip_input v"></div>
+										<div class="stip_amount">До: <input name="support_date" type="date" class="stip_input d"></div>
+									</div>
+									<div class="stip_check">
+										<img class="checkbox_img" src="../img/Service/vg.png">
+										<input type="checkbox" hidden>
+									</div>
+								</div>
+							</div>
+						</div>
+						<input type="text" name="stips" id="stips" hidden>
+						<input type="text" name="ids" id="ids" hidden>
+						<button class="btn_style btn submit">Назначить стипендию</button>
+					</form>
+					<button type="button" class="btn_style btn all">Выбрать всех аспирантов</button>					
+						<div class="asps">
+							@{int i = 1;}
+							@foreach(var asp in ViewBag.Asps)
+							{
+							@if (i % 3 == 0 || i == ViewBag.Asps.Count)
+							{
+								<div class="asp_display">
+									@if(ViewBag.Asp1 != null)
+									{
+									<div class="asp_card asp" id="@ViewBag.Asp1.Id">
+										<div class="asp_info">
+											<div class="asp_name">
+												@ViewBag.Asp1.Surname @ViewBag.Asp1.Name @if (ViewBag.Asp1.Patronymic != null)@ViewBag.Asp1.Patronymic
+											</div>
+											<div class="asp_group">
+												@ViewBag.Asp1.GNumber
+											</div>
+											<div class="asp_number">
+												№ @ViewBag.Asp1.CNumber
+											</div>
+										</div>
+										<div class="asp_check">
+											<img class="checkbox_img" src="../img/Service/vg.png">
+											<input type="checkbox" hidden>
+										</div>
+									</div>
+									}
+									@if(ViewBag.Asp2 != null)
+									{
+									<div class="asp_card asp" id="@ViewBag.Asp2.Id">
+										<div class="asp_info">
+											<div class="asp_name">
+												@ViewBag.Asp2.Surname @ViewBag.Asp2.Name @if (ViewBag.Asp2.Patronymic != null)@ViewBag.Asp2.Patronymic
+											</div>
+											<div class="asp_group">
+												@ViewBag.Asp2.GNumber
+											</div>
+											<div class="asp_number">
+												№ @ViewBag.Asp2.CNumber
+											</div>
+										</div>
+										<div class="asp_check">
+											<img class="checkbox_img" src="../img/Service/vg.png">
+											<input type="checkbox" hidden>
+										</div>
+									</div>
+									}
+									<div class="asp_card asp" id="@asp.Id">
+										<div class="asp_info">
+											<div class="asp_name">
+												@asp.Surname @asp.Name @if (asp.Patronymic != null)@asp.Patronymic
+											</div>
+											<div class="asp_group">
+												@asp.GNumber
+											</div>
+											<div class="asp_number">
+												№ @asp.CNumber
+											</div>
+										</div>
+										<div class="asp_check">
+											<img class="checkbox_img" src="../img/Service/vg.png">
+											<input type="checkbox" hidden>
+										</div>
+									</div>
+								</div>
+							<div hidden>@{ViewBag.Asp1 = null;}</div>
+							<div hidden>@{ViewBag.Asp2 = null;}</div>
+							}
+							else
+							{
+								@if(i % 3 == 1)
+								{
+									<div hidden>@{ViewBag.Asp1 = asp;}</div>
+								}
+								@if (i % 3 == 2)
+								{
+									<div hidden>@{ViewBag.Asp2 = asp;}</div>
+								}
+							}
+							<div hidden>@{i=i+1;}</div>
+							}
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/script.js"></script>
+	<script src="../js/grants-asp.js"></script>
+
+</body>
+
+</html>

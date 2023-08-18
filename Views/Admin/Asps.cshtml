@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<title>Аспиранты</title>
+	<link rel="stylesheet" href="../css/a_aspsstyle.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	<script src="../js/preloader.js"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<header class="header">
+			<div class="container">
+				<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Admin")">
+						<img src="../img/Service/logo.png">
+					</a>
+					<div>
+						<span class="header__name_my">МОЯ</span><span class="header__name_asp">АСПИРАНТУРА</span>
+					</div>
+					<details class="detail__body" data-toggle="dropdown">
+						<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"><span
+								class="caret" id="caret"></span></summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account", "Admin")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Asps", "Admin")" class="header__link">Аспиранты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs", "Admin")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Grants", "Admin")" class="header__link">Стипендии</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable", "Admin")" class="header__link">Расписания</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts", "Admin")" class="header__link">Контакты</a>
+                                @if(ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+                                {
+								<li>
+									<a href="@Url.Action("Statistics", "AdminPanel")" class="header__link">Статистика</a>
+								</li>
+                                }
+								</li>
+								<li>
+									<a href="@Url.Action("Logout", "Admin")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<div class="container">
+				<div class="content_text">
+                    <div class="content_buttons">
+                        <div class="buttons_display_div">
+						    <div class="button_add">
+					            <a class="btn_style" href="#newpopup">Добавить новых аспирантов</a>
+				            </div>
+			                <div class="button_add">
+							    <a class="btn_style" href="#delonepopup">Удалить одного аспиранта</a>
+						    </div>
+					        <div class="button_add">
+				                <a class="btn_style" href="#delanypopup">Удалить несколько аспирантов</a>
+			                </div>
+		                    <div class="button_add">
+	                            <form class="form_group" asp-action="DownloadAllAsps" asp-controller="Admin">
+									<button class="btn_style">Выгрузка всех аспирантов</button>
+								</form>
+							</div>
+		                    <div class="button_add">
+								<a class="btn_style" href="#downloadAchievpopup">Выгрузка всех достижений аспранта</a>
+							</div>
+							<div class="button_add">
+						        <a class="btn_style" href="#changepopup">Изменить данные аспиранта</a>
+					        </div>
+						</div>
+						<div class="buttons_display_div">
+				            <div class="button_add">
+			                    <a class="btn_style" href="#resetpasspopup">Сбросить пароль аспиранта</a>
+		                    </div>
+	                        <div class="button_add">
+							    <a class="btn_style" href="#academpopup">Перевести в академический отпуск</a>
+						    </div>
+					        <div class="button_add">
+				                <a class="btn_style" href="#ratingpopup">Загрузить оценки</a>
+			                </div>
+							<div class="button_add">
+								<form class="form_group" asp-action="GetResultsExcel" asp-controller="Admin" enctype="multipart/form-data">
+									<button type="submit" class="btn_style">Выгрузка всех оценок</button>
+								</form>
+					        </div>
+					        <div class="button_add">
+								<form class="form_group" asp-action="DeleteAllResults" asp-controller="Admin" enctype="multipart/form-data">
+									<button type="submit" class="btn_style">Удалить все оценки</button>
+								</form>
+			                </div>
+		                    <div class="button_add">
+	                            <form class="form_group" asp-action="PhotoManagement" asp-controller="Admin">
+									<button type="submit" class="btn_style counter_div">Управление фотографиями <span class="span_counter">@ViewBag.PM_Count</span></button>
+								</form>
+							</div>
+                        </div>
+                    </div>
+
+					<div class="hidden_div">
+						@foreach(var asp in ViewBag.Asps)
+						{
+							<div class="asp-block">
+								<div id="id">@asp.Id</div>
+	                            <div id="FIO">@asp.Surname @asp.Name @if (asp.Patronymic != null) @asp.Patronymic</div>
+								<div id="cnumber">@asp.CNumber</div>
+							    <div id="gnumber">@asp.GNumber</div>
+						        <div id="stDir">@asp.StDirection</div>
+					            <div id="stProf">@asp.ProfDirection</div>
+				                <div id="theme">@asp.WTheme</div>
+			                    <div id="scientist">@asp.ScientistID</div>
+		                        <div id="tel">@asp.Phone</div>
+	                            <div id="email">@asp.Email</div>
+							</div>
+						}
+					</div>
+
+
+					<div id="newpopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="AddAsp" asp-controller="Admin" enctype="multipart/form-data">
+									<div class="popup_title">Добавить новых аспирантов</div>
+									<div class="popup_limits">Максимум файлов: 1<br>
+										Поддерживаемые типы файлов: Excel</div>
+									<div class="drop_area first">
+										<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+										<header class="drop_header">Перетащите файл</header>
+										<span class="drop_span">или</span>
+										<button type="button" class="btn_style">Выбрать файл</button>
+										<input type="file" name="fileupload" id="fileupload" hidden>
+									</div>
+									<div class="popup_buttons">
+										<button class="submit" onclick="location.href='#header'">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="delonepopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="DelOneAsp" asp-controller="Admin" onsubmit="return confirm('Аккаунт будет безвозвратно удален')">
+									<div class="popup_title">Удалить одного аспиранта</div>
+									<div class="popup_buttons">
+										<input class="popup_input" type="text" name="aspid" placeholder="Номер удостоверения">
+										<button class="submit">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="delanypopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="DelAspDiap" asp-controller="Admin" onsubmit="return confirm('Аккаунты будут безвозвратно удалены')">
+									<div class="popup_title">Удалить несколько аспирантов</div>
+									<div class="popup_limits">Удаление происходит в диапазоне от первого введенного значения до последнего по порядку</div>
+									<div class="popup_buttons">
+										<input class="popup_input" type="text" name="firstasp"
+											placeholder="Первое удостоверение">
+										<input class="popup_input" type="text" name="lastasp"
+											placeholder="Последнее удостоверение">
+										<button class="submit">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="changepopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content changer">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<div class="popup_title">Изменить данные аспиранта</div>
+								<div class="popup_buttons">
+									<input class="popup_input" type="text" name="changeasp" placeholder="Номер удостоверения">
+									<button class="submit">Перейти</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="resetpasspopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="ResetAspPass" asp-controller="Admin">
+									<div class="popup_title">Сбросить пароль аспиранту</div>
+									<div class="popup_buttons">
+										<input class="popup_input" type="text" name="cnumber" placeholder="Номер удостоверения">
+										<button class="submit">Сбросить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="downloadAchievpopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="DownloadAchievments" asp-controller="Admin">
+									<div class="popup_title">Выгрузка всех достижений аспиранта</div>
+									<div class="popup_buttons">
+										<input class="popup_input" type="text" name="cnumber" placeholder="Номер удостоверения">
+										<button class="submit" onclick="location.href='#header'">Скачать</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="ratingpopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content rate">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="AddResult" asp-controller="Admin" enctype="multipart/form-data">
+									<div class="popup_title">Загрузить оценки</div>
+									<div class="popup_limits">Максимум файлов: 1<br>
+										Поддерживаемые типы файлов: Excel</div>
+									<div class="drop_area second">
+										<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+										<header class="drop_header">Перетащите файл</header>
+										<span class="drop_span">или</span>
+										<button type="button" class="btn_style">Выбрать файл</button>
+										<input type="file" name="fileupload" id="fileupload" hidden>
+									</div>
+									<div class="popup_buttons">
+										<button class="submit" onclick="location.href='#header'">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="changerpopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content rate">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="UpdateAsp" asp-controller="Admin">
+									<div class="popup_title">Изменить данные аспиранта</div>
+									<input type="hidden" name="id">
+									<div class="popup_limits">ФИО</div>
+									<input class="popup_input" name="FIO" placeholder="ФИО">
+									<div class="popup_limits">Номер удостоверения</div>
+									<input class="popup_input" name="cnumber" placeholder="Номер удостоверения">
+									<div class="popup_limits">Номер группы</div>
+									<input class="popup_input" name="gnumber" placeholder="Номер группы">
+									<div class="popup_limits">Направление подготовки</div>
+									<input class="popup_input" name="stDir" placeholder="Направление подготовки">
+									<div class="popup_limits">Профиль подготовки</div>
+									<input class="popup_input" name="stProf" placeholder="Профиль подготовки">
+									<div class="popup_limits">Тема работы</div>
+									<input class="popup_input" name="theme" placeholder="Тема работы">
+									<div class="popup_limits">Научный руководитель</div>
+									<input class="popup_input" name="scientist" placeholder="Научный руководитель">
+									<div class="popup_limits">Телефон</div>
+									<input class="popup_input" name="tel" placeholder="Телефон">
+									<div class="popup_limits">Почта</div>
+									<input class="popup_input" name="mail" placeholder="Почта">
+									<div class="popup_buttons">
+										<button class="submit" onclick="location.href='#header'">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="academpopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content rate">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="SendToAcademic" asp-controller="Admin">
+									<div class="popup_title">Изменить данные аспиранта</div>
+									<input class="popup_input" name="cnumber" placeholder="Номер удостоверения">
+									<div class="popup_limits">Дата начала академ. отпуска</div>
+									<input class="popup_input" type="date" name="firstDate" placeholder="Дата начала академ. отпуска">
+									<div class="popup_limits">Дата окончания академ. отпуска</div>
+									<input class="popup_input" type="date" name="secondDate" placeholder="Дата окончания академ. отпуска">
+									<div class="popup_buttons">
+										<button class="submit" onclick="location.href='#header'">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/redirecter_a_asp.js"></script>
+	<script src="../js/fileloader_a_asp.js"></script>
+	<script src="../js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+﻿@model MyAsp.Models.RequestModel;
+
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Восстановить пароль</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../css/loginstyle.css">
+		<script  src="../js/preloader.js" type="text/javascript"></script>
+	</head>
+	<body>
+
+		<div class="preloader">
+    		<div class="preloader__row">
+      			<div class="preloader__item"></div>
+      			<div class="preloader__item"></div>
+    		</div>
+  		</div>
+  		
+		<div class="stankin_logo">
+			<div class="content">
+				<div class="title_my_asp"><span class="title_my">МОЯ</span> <span class="title_asp">АСПИРАНТУРА</span></div>
+				<div class="blocked">
+					<p class="title_enter small">Восстановление пароля</p>
+					<form asp-action="Restore" asp-controller="Asp">
+						<input class="title_input" type="text" asp-for="Login" placeholder="Логин или e-mail">
+						<span asp-validation-for="Login" class="text-danger"></span>
+						<span asp-validation-for="Sent" class="text-success"></span>
+						<button class="title_enter_button" type="submit">Восстановить</button>
+						<div class="down_menu"></div>
+						<span tooltip="Обратитесь в кабинет 219" flow="up" class="title_forgot_pass" onclick="">Забыли логин и почту?</span>
+					</form>
+				<button class="title_enters_button" onclick="location.href='@Url.Action("Login", "Asp")'">Вернуться ко входу</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

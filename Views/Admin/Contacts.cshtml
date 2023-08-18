@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Контакты</title>
+		<link rel="stylesheet" href="../css/a_contstyle.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+		<script  src="../js/preloader.js"></script>
+	</head>
+	<body>
+		<div class="wrapper">
+			<header class="header">
+				<div class="container">
+					<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Admin")">
+						<img src="../img/Service/logo.png">
+					</a>
+						<div>
+							<span class="header__name_my">МОЯ</span><span class="header__name_asp">АСПИРАНТУРА</span>
+						</div>
+						<details class="detail__body" data-toggle="dropdown">
+							<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"><span class="caret" id="caret"></span></summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account", "Admin")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Asps", "Admin")" class="header__link">Аспиранты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs", "Admin")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Grants", "Admin")" class="header__link">Стипендии</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable", "Admin")" class="header__link">Расписания</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts", "Admin")" class="header__link">Контакты</a>
+                                @if(ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+                                {
+								<li>
+									<a href="@Url.Action("Statistics", "AdminPanel")" class="header__link">Статистика</a>
+								</li>
+                                }
+								</li>
+								<li>
+									<a href="@Url.Action("Logout", "Admin")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+						</details>
+					</div>
+				</div>
+			</header>
+			<div class="content">
+				<div class="container">
+					<div class="content_text">
+						
+						<div class="content_buttons">
+							<div class="button_add">
+								<a class="btn_style" href="#newpopup">Добавить нового сотрудника</a>
+							</div>
+							<div class="button_add">
+								<a class="btn_style" href="#delpopup">Удалить сотрудника</a>
+							</div>
+						@if (ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+						{
+							<div class="button_add">
+								<a class="btn_style" href="#rolerpopup">Изменить роль сотрудника</a>
+							</div>
+						}
+							<div class="button_add">
+								<a class="btn_style" href="#changepopup">Изменить директора центра</a>
+							</div>
+							<div class="button_add">
+								<a class="btn_style" href="#addsciencepopup">Добавить науч. рук-лей</a>
+							</div>
+						</div>
+
+
+
+
+						<div id="newpopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group" asp-action="AddAdmin" asp-controller="Admin" enctype="multipart/form-data">
+										<div class="popup_title">Добавить нового сотрудника</div>
+										<div class="popup_limits">Максимум файлов: 1<br>
+											Поддерживаемые типы файлов: Excel</div>
+										<div class="drop_area first">
+											<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+											<header class="drop_header">Перетащите файл</header>
+											<span class="drop_span">или</span>
+											<button type="button" class="btn_style">Выбрать файл</button>
+											<input type="file" name="fileupload" id="fileupload" hidden>
+										</div>
+										<div class="popup_buttons">
+											<button class="submit">Сохранить</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div id="delpopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group" asp-action="DeleteAdmin" asp-controller="Admin" onsubmit="return confirm('Аккаунт сотрудника будет безвозвратно удален')">
+										<div class="popup_title">Удалить сотрудника</div>
+										<div class="popup_buttons">
+											<div class="popup_limits">Эл. почта сотрудника</div>
+											<input class="popup_input" type="name" name="adminemail" placeholder="Эл. почта сотрудника">
+											<button class="delete">Удалить</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						
+					@if (ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+					{
+						<div id="rolerpopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group">
+										<div class="popup_title">Изменить роль сотрудника</div>
+										<div class="popup_buttons">
+											<form asp-action="ChangeRole" asp-controller="Admin">
+												<div class="popup_limits">Сотрудник</div>
+												<select class="popup_input" name="id">
+													@foreach (var employee in ViewBag.Admins)
+													{
+														@if (employee.Id != ViewBag.Account.Id)
+														{
+															<option value="@employee.Id">@employee.Surname @employee.Name</option>
+														}
+
+													}
+												</select>
+												<div class="popup_limits">Уровень доступа</div>
+												<select class="popup_input" name="lvl">
+													<option value="1">1 уровень доступа</option>
+													<option value="2">2 уровень доступа</option>
+													<option value="3">3 уровень доступа</option>
+												</select>
+												<button class="submit" onclick="location.href='#header'">Изменить</button>
+											</form>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					}
+
+						<div id="changepopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content changer">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<div class="popup_title">Изменить данные директора центра</div>
+                                    <form asp-action="UpdateDirector" asp-controller="Admin">
+										<div class="popup_limits"><div class="limit_name">Изменить фотографию</div>Максимум файлов: 1<br>Поддерживаемые типы файлов: jpg, jpeg, png</div>
+	                                    <div class="drop_area second">
+		                                    <img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+			                                <header class="drop_header">Перетащите файл</header>
+				                            <span class="drop_span">или</span>
+					                        <button type="button" class="btn_style">Выбрать файл</button>
+						                    <input type="file" name="photo" id="fileupload" hidden>
+							            </div>
+								        <div class="popup_buttons">
+											<div class="popup_limits">Должность</div>
+									        <input class="popup_input" type="name" name="function" placeholder="Должность">
+											<div class="popup_limits">ФИО</div>
+										    <input class="popup_input" type="name" name="name" placeholder="ФИО">
+											<div class="popup_limits">Телефон</div>
+										    <input class="popup_input" type="tel" name="phone" placeholder="Телефон">
+										    <button class="submit" onclick="location.href='#header'">Сохранить</button>
+									    </div>
+                                    </form>
+								</div>
+							</div>
+						</div>
+
+						<div id="addsciencepopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content changer">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<div class="popup_title">Добавить научных руководителей</div>
+                                    <form asp-action="AddScientist" asp-controller="Admin">
+										<div class="popup_limits"><div class="limit_name">Изменить фотографию</div>Максимум файлов: 1<br>Поддерживаемые типы файлов: xlsx, xls</div>
+	                                    <div class="drop_area second">
+		                                    <img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+			                                <header class="drop_header">Перетащите файл</header>
+				                            <span class="drop_span">или</span>
+					                        <button type="button" class="btn_style">Выбрать файл</button>
+						                    <input type="file" name="file" id="fileupload" hidden>
+							            </div>
+										<div class="popup_title">Добавить научного руководителя вручную</div>
+								        <div class="popup_buttons">
+											<div class="popup_limits">ФИО. Полностью или Фамилия Инициалы</div>
+										    <input class="popup_input" type="text" name="name" placeholder="ФИО">
+											<div class="popup_limits">Ученая степень</div>
+									        <input class="popup_input" type="text" name="degree" placeholder="Ученая степень">
+											<div class="popup_limits">Кафедра</div>
+									        <input class="popup_input" type="text" name="department" placeholder="Кафедра">
+											<div class="popup_limits">Телефон</div>
+										    <input class="popup_input" type="tel" name="tel" placeholder="Телефон">
+											<div class="popup_limits">Почта</div>
+										    <input class="popup_input" type="email" name="mail" placeholder="Почта">
+										    <button class="submit" onclick="location.href='#header'">Сохранить</button>
+									    </div>
+                                    </form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script src="../js/fileloader_a_cont.js"></script>
+		<script  src="../js/script.js"></script>
+		
+	</body>
+</html>

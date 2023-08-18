@@ -1,0 +1,37 @@
+@model MyAsp.Models.LoginModel;
+
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Вход в систему администратора</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="../css/loginstyle.css">
+		<script  src="../js/preloader.js" type="text/javascript"></script>
+	</head>
+	<body>
+
+		<div class="preloader">
+    		<div class="preloader__row">
+      			<div class="preloader__item"></div>
+      			<div class="preloader__item"></div>
+    		</div>
+  		</div>
+
+		<div class="stankin_logo">
+			<div class="content">
+				<div class="title_my_asp"><span class="title_my">МОЯ</span> <span class="title_asp">АСПИРАНТУРА</span></div>
+				<div class="title_adm">администратор</div>
+				<p class="title_enter">Вход</p>
+				<form asp-action="Login" asp-controller="Admin" asp-anti-forgery="true">
+					<input class="title_input" type="text" asp-for="Login" placeholder="Логин">
+					<div>
+						<input class="title_input" type="password" asp-for="Password" placeholder="Пароль">
+						<span asp-validation-for="ModelError" class="text-danger"></span>
+					</div>
+					<button class="title_enter_button" type="submit">Войти</button>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

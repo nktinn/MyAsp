@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<title>Моя успеваемость</title>
+	<link rel="stylesheet" href="../css/edustyle.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	<script src="../js/preloader.js"></script>
+</head>
+
+<body>
+
+	<div class="preloader">
+		<div class="preloader__row">
+			<div class="preloader__item"></div>
+			<div class="preloader__item"></div>
+		</div>
+	</div>
+
+
+	<div class="wrapper">
+		<header class="header">
+			<div class="container">
+				<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Asp")">
+						<img src="../img/Service/logo.png">
+					</a>
+					<a class="header__name" href="@Url.Action("Account","Asp")">
+						<div class="header__name_my">МОЯ</div><div class="header__name_asp">АСПИРАНТУРА</div>
+					</a>
+					<details class="detail__body" data-toggle="dropdown">
+						<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo">
+						</summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account","Asp")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Education","Asp")" class="header__link">Успеваемость</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs","Asp")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Achievments","Asp")" class="header__link">Достижения</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable","Asp")" class="header__link">Расписание</a>
+								</li>
+								<li>
+									<a href="@Url.Action("News","Asp")" class="header__link">Новости</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts","Asp")" class="header__link">Контакты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Logout","Asp")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<div class="container">
+				<div class="content_text">
+					@if(ViewBag.Results.Count > 0)
+					{
+						@if (ViewBag.Results[0].Type == "1")
+						{
+							<div class="results">
+								<div class="res_head">Результаты сессии</div>
+								<div class="subject main">
+									<div class="subject_name">
+										Предмет
+									</div>
+									<div class="subject_rating">
+										Оценка
+									</div>
+								</div>
+								@foreach (var subject in ViewBag.Results)
+								{
+									@if (subject.Type != "1")
+									{
+										continue;
+									}
+									<div class="subject">
+										<div class="subject_name">
+											@subject.SubjName
+										</div>
+										@if (subject.Grade == "2" || subject.Grade.Contains("Не"))
+										{
+											<div class="subject_rating red">
+												@subject.Grade
+											</div>
+										}
+										else
+										{
+											<div class="subject_rating">
+												@subject.Grade
+											</div>
+										}
+									</div>
+								}
+							</div>
+						}
+					}
+					else
+					{
+						<div class="result_exam">
+							<div class="exam_head">Результатов экзаменов пока нет</div>
+						</div>
+					}
+					@if (ViewBag.Results.Count > 0)
+					{
+						@if (ViewBag.Results[ViewBag.Results.Count - 1].Type == "2")
+						{
+							<div class="result_exam">
+								<div class="exam_head">Кандидатские экзамены</div>
+								<div class="subject_exam main">
+									<div class="subject_name">
+										Дисциплина
+									</div>
+									<div class="subject_rating">
+										Оценка
+									</div>
+								</div>
+								@foreach (var subject in ViewBag.Results)
+								{
+									@if (subject.Type != "2")
+									{
+										continue;
+									}
+									<div class="subject_exam">
+										<div class="subject_name exam">
+											@subject.SubjName
+										</div>
+										@if (subject.Grade == "2")
+										{
+											<div class="subject_rating red">
+												@subject.Grade
+											</div>
+										}
+										else
+										{
+											<div class="subject_rating">
+												@subject.Grade
+											</div>
+										}
+									</div>
+								}
+							</div>
+						}
+					}
+					else
+					{
+						<div class="result_exam">
+						<div class="exam_head">Результатов кандидатских экзаменов пока нет</div>
+						</div>
+					}
+					<div class="stip_head">
+						Стипендии в этом месяце
+					</div>
+					<div class="stips">
+						<div class="stip_body main">
+							<div class="stip_name main">
+								Академическая стипендия
+							</div>
+							@if(ViewBag.Academic != null)
+							{
+							<div class="stip_amount main">
+								@ViewBag.Academic.Amount ₽
+							</div>
+							<div class="stip_is main">
+								<img class="vx" src="../img/Service/vg.png">
+							</div>
+							}
+							else
+							{
+							<div class="stip_amount main">
+								- ₽
+							</div>
+							<div class="stip_is main">
+								<img class="vx" src="../img/Service/xr.png">
+							</div>
+							}
+						</div>
+						<div class="stip_body">
+							<div class="stip_name">
+								Правительственная стипендия
+							</div>
+							@if(ViewBag.Government != null)
+							{
+							<div class="stip_amount">
+								@ViewBag.Government.Amount ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/vg.png">
+							</div>
+							}
+							else
+							{
+							<div class="stip_amount">
+								- ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/xr.png">
+							</div>
+							}
+						</div>
+						<div class="stip_body">
+							<div class="stip_name">
+								Президентская стипендия
+							</div>
+							@if(ViewBag.President != null)
+							{
+							<div class="stip_amount">
+								@ViewBag.President.Amount ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/vg.png">
+							</div>
+							}
+							else
+							{
+							<div class="stip_amount">
+								- ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/xr.png">
+							</div>
+							}
+						</div>
+						<div class="stip_body">
+							<div class="stip_name">
+								Социальная стипендия
+							</div>
+							@if(ViewBag.Social != null)
+							{
+							<div class="stip_amount">
+								@ViewBag.Social.Amount ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/vg.png">
+							</div>
+							}
+							else
+							{
+							<div class="stip_amount">
+								- ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/xr.png">
+							</div>
+							}
+						</div>
+						<div class="stip_body">
+							<div class="stip_name">
+								Материальная выплата
+							</div>
+							@if(ViewBag.Support != null)
+							{
+							<div class="stip_amount">
+								@ViewBag.Support.Amount ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/vg.png">
+							</div>
+							}
+							else
+							{
+							<div class="stip_amount">
+								- ₽
+							</div>
+							<div class="stip_is">
+								<img class="vx" src="../img/Service/xr.png">
+							</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/script.js"></script>
+
+</body>
+
+</html>

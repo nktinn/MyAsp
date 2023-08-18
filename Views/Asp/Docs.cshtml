@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Мои документы</title>
+		<link rel="stylesheet" href="../css/docsstyle.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+		<script  src="../js/preloader.js"></script>
+	</head>
+	<body>
+
+		<div class="preloader">
+    		<div class="preloader__row">
+      			<div class="preloader__item"></div>
+      			<div class="preloader__item"></div>
+    		</div>
+  		</div>
+
+		
+		<div class="wrapper">
+			<header class="header">
+				<div class="container">
+					<div class="header__body">
+						<a class="header__logo" href="@Url.Action("Account","Asp")">
+							<img src="../img/Service/logo.png">
+						</a>
+						<a class="header__name" href="@Url.Action("Account","Asp")">
+							<div class="header__name_my">МОЯ</div><div class="header__name_asp">АСПИРАНТУРА</div>
+						</a>
+						<details class="detail__body" data-toggle="dropdown">
+							<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"></summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account","Asp")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Education","Asp")" class="header__link">Успеваемость</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs","Asp")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Achievments","Asp")" class="header__link">Достижения</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable","Asp")" class="header__link">Расписание</a>
+								</li>
+								<li>
+									<a href="@Url.Action("News","Asp")" class="header__link">Новости</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts","Asp")" class="header__link">Контакты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Logout","Asp")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+						</details>
+					</div>
+				</div>
+			</header>
+			<div class="content">
+				<div class="container">
+					<div class="content_text">
+					@if(ViewBag.DocsThat.Count == 0 && ViewBag.DocsLast.Count == 0 && ViewBag.DocsEarlier.Count == 0)
+					{
+						<div class="document_nothing">Документов пока нет</div>
+					}
+					else
+					{
+					@if (ViewBag.DocsThat.Count > 0)
+					{
+						<div class="document_date">В этом месяце</div>
+						@foreach (var doc in ViewBag.DocsThat)
+						{
+							<div class="content_document">
+								<div class="document_text">
+									<div class="document_disp">
+										<img class="document_img" src="../img/Service/document.png">
+										<div class="document_name">@doc.Name от @doc.Date</div>
+									</div>
+								</div>
+							</div>
+						}
+					}	
+					@if (ViewBag.DocsLast.Count > 0)
+					{
+						<div class="document_date">В прошлом месяце</div>
+						@foreach (var doc in ViewBag.DocsLast)
+						{
+							<div class="content_document">
+								<div class="document_text">
+									<div class="document_disp">
+										<img class="document_img" src="../img/Service/document.png">
+										<div class="document_name">@doc.Name от @doc.Date</div>
+									</div>
+								</div>
+							</div>
+						}
+					}
+					@if (ViewBag.DocsEarlier.Count > 0)
+					{
+					<div class="document_date">Давно</div>
+						@foreach (var doc in ViewBag.DocsEarlier)
+						{
+							<div class="content_document">
+								<div class="document_text">
+									<div class="document_disp">
+										<img class="document_img" src="../img/Service/document.png">
+										<div class="document_name">@doc.Name от @doc.Date</div>
+									</div>
+								</div>
+							</div>
+						}
+					}
+					}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script  src="../js/script.js"></script>
+		
+	</body>
+</html>

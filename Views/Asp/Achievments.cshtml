@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<title>Мои достижения</title>
+	<link rel="stylesheet" href="../css/achievstyle.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+	<script src="../js/preloader.js"></script>
+</head>
+
+<body>
+
+	<div class="preloader">
+		<div class="preloader__row">
+			<div class="preloader__item"></div>
+			<div class="preloader__item"></div>
+		</div>
+	</div>
+
+
+	<div class="wrapper">
+		<header class="header">
+			<div class="container">
+				<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Asp")">
+						<img src="../img/Service/logo.png">
+					</a>
+					<a class="header__name" href="@Url.Action("Account","Asp")">
+						<div class="header__name_my">МОЯ</div><div class="header__name_asp">АСПИРАНТУРА</div>
+					</a>
+					<details class="detail__body" data-toggle="dropdown">
+						<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo">
+						</summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account","Asp")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Education","Asp")" class="header__link">Успеваемость</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs","Asp")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Achievments","Asp")" class="header__link">Достижения</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable","Asp")" class="header__link">Расписание</a>
+								</li>
+								<li>
+									<a href="@Url.Action("News","Asp")" class="header__link">Новости</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts","Asp")" class="header__link">Контакты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Logout","Asp")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<div class="container">
+				<div class="content_text">
+					<div class="button_add">
+						<a class="btn_style" href="#filepopup">Добавить файл</a>
+					</div>
+					@if(ViewBag.Docs.Count == 0)
+					{
+						<div class="document_nothing">Достижений пока нет</div>
+					}
+					else
+					{
+					@foreach (var doc in ViewBag.Docs)
+					{
+					<div class="content_document">
+						<div class="document_text">
+							<div class="document_disp">
+								<img class="document_img" src="../img/Service/document.png">
+								<div class="document_name">@doc.Name от @doc.Date</div>
+							</div>
+							<div class="buttons">
+								<form class="form_group" onsubmit="return confirm('Достижение будет безвозвратно удалено')" asp-action="DeleteDoc" asp-controller="Asp">
+									<button class="btn_style" href="">Удалить</button>
+									<input type="text" name="fileId" value="@doc.Id" hidden>
+								</form>
+								<a class="btn_style" href="../achievments/@doc.File" download>Скачать</a>
+							</div>
+						</div>
+					</div>
+					}
+					}
+
+					<div id="filepopup" class="popup">
+						<a href="#header" class="popup_area"></a>
+						<div class="popup_body">
+							<div class="popup_content">
+								<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+								<form class="form_group" asp-action="AddDoc" asp-contoller="Asp" enctype="multipart/form-data">
+									<div class="popup_title">Добавить достижения</div>
+									<div class="popup_limits">Максимум файлов: 1<br>
+										Поддерживаемые типы файлов: pdf, doc, jpeg, jpg, png</div>
+									<div class="drop_area">
+										<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+										<header class="drop_header">Перетащите файл</header>
+										<span class="drop_span">или</span>
+										<button type="button" class="btn_style">Выбрать файл</button>
+										<input class="fileupload" type="file" name="fileupload" id="fileupload" hidden>
+									</div>
+									<div class="popup_buttons">
+										<input class="popup_input" type="name" name="filename" placeholder="Введите название">
+										<button class="submit">Сохранить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/fileloader.js"></script>
+	<script src="../js/script.js"></script>
+
+</body>
+
+</html>

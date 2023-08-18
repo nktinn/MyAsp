@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Мой аккаунт</title>
+		<link rel="stylesheet" href="../css/accstyle.css">
+		<link rel="stylesheet" href="../css/cropper.css">
+		<link rel="stylesheet" href="../css/cropperstyle.css">
+		<meta charset="UTF-8">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" type="text/javascript"></script>
+		<script  src="../js/preloader.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div class="preloader">
+    		<div class="preloader__row">
+      			<div class="preloader__item"></div>
+      			<div class="preloader__item"></div>
+    		</div>
+  		</div>
+		<div class="wrapper">
+			<header id="header" class="header">
+				<div class="container">
+					<div class="header__body">
+						<a class="header__logo" href="@Url.Action("Account","Asp")">
+							<img src="../img/Service/logo.png">
+						</a>
+						<a class="header__name" href="@Url.Action("Account","Asp")">
+							<div class="header__name_my">МОЯ</div><div class="header__name_asp">АСПИРАНТУРА</div>
+						</a>
+						<details class="detail__body">
+							<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"></summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account","Asp")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Education","Asp")" class="header__link">Успеваемость</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs","Asp")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Achievments","Asp")" class="header__link">Достижения</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable","Asp")" class="header__link">Расписание</a>
+								</li>
+								<li>
+									<a href="@Url.Action("News","Asp")" class="header__link">Новости</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts","Asp")" class="header__link">Контакты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Logout","Asp")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+						</details>
+					</div>
+				</div>
+			</header>
+			<div class="content">
+				<div class="content_text">
+						<div class="personal">
+							<img class="personal_photo" src="../img/Avatars/@ViewBag.Account.Photo">
+							<div class="personal_display">
+								<div class="personal_info">
+									<p style="margin-bottom:20px">@ViewBag.Account.Surname @ViewBag.Account.Name @if(ViewBag.Account.Patronymic != null){@ViewBag.Account.Patronymic}</p>
+									<p><span class="bolder_titles" style="font-style:normal">Удостоверение</span> №@ViewBag.Account.CNumber</p>
+									<p><div class="bolder_titles">Группа:</div> @if(!ViewBag.Account.GNumber.Contains("отпуск")){@ViewBag.Account.GNumber}else{<span style="color:red">@ViewBag.Account.GNumber</span>}</p>
+									<p><div class="bolder_titles">Направление подготовки:</div> @ViewBag.Account.StDirection</p>
+									<p><div class="bolder_titles">Профиль подготовки:</div> @ViewBag.Account.ProfDirection</p>
+								</div>
+								<div class="personal_science">
+									@if (@ViewBag.Account.ScientistID != null)
+									{
+										<p>Научный руководитель</p>
+										<p style="margin-bottom: 7px;">Контакты для связи с науч. рук.</p>
+									}
+									else {<p>Научный руководитель еще не назначен</p>}
+									@if (@ViewBag.Account.WTheme != null)
+									{<p>Тема работы</p>}
+								</div>
+							</div>
+						</div>
+					<div class="buttons">
+						<a href="#profpopup" class="btn_style btn_light">Изменить данные</a><br>
+						<a href="#passpopup" class="btn_style btn_light">Изменить пароль</a><br>
+						<a href="#photopopup" class="btn_style btn_light">Изменить фото</a>
+					</div>
+				</div>
+				<div class="personal_contacts">
+					<p style="margin-bottom: 20px;"><div class="bolder_titles">Ваши контакты:</div></p>
+					@if(ViewBag.Account.Phone != null)
+					{<p>Телефон: @ViewBag.Account.Phone</p>}
+					else {<p>Телефон еще не указан</p>}
+					@if(ViewBag.Account.Email != null)
+					{<p>Электронная почта: @ViewBag.Account.Email</p>}
+					else {<p>Электронная почта еще не указана</p>}
+			</div>
+			</div>
+		</div>
+		<div id="profpopup" class="popup">
+			<a href="#header" class="popup_area"></a>
+			<div class="popup_body">
+				<div class="popup_content">
+					<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+						<form class="form_group" asp-action="ChangeInfo" asp-contoller="Asp">
+						<div class="popup_title">Изменить данные</div>
+						<div class="popup_buttons">
+							<input class="popup_input" type="tel" name="phone" placeholder="Телефон" value="@ViewBag.Account.Phone">
+							<input class="popup_input" type="email" name="email" placeholder="Электронная почта" value="@ViewBag.Account.Email">
+							<button class="submit" onclick="location.href='#header'">Сохранить</button>
+						</div>
+						</form>
+				</div>
+			</div>
+		</div>
+		<div id="passpopup" class="popup">
+			<a href="#header" class="popup_area"></a>
+			<div class="popup_body">
+				<div class="popup_content">
+					<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+						<form class="form_group" asp-action="ChangePass" asp-contoller="Asp">
+						<div class="popup_title">Изменить пароль</div>
+						<div class="popup_buttons">
+							<input class="popup_input" type="password" name="oldpass" placeholder="Старый пароль">
+							<input class="popup_input" type="password" name="newpass" placeholder="Новый пароль">
+							<input class="popup_input" type="password" name="newpass2" placeholder="Повторите пароль">
+							<button class="submit">Сохранить</button>
+						</div>
+						</form>
+				</div>
+			</div>
+		</div>
+		<div id="photopopup" class="popup">
+			<a href="#header" class="popup_area"></a>
+			<div class="popup_body">
+				<div class="popup_content">
+					<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+					<div class="popup_title">Изменить фото</div>
+					<div class="popup_text">
+						<div class="photocontainer">
+							<div class="image-container">
+								<div class="image-workspace">
+									<img src="" alt="">
+									<span class="image-span">Загрузите изображение</span>
+								</div>
+								@if(ViewBag.PM == true)
+								{
+									<p class="text-success">• Ваша последняя фотография на модерации</p>
+								}
+							</div>
+							<div class="preview-container" style="display: none;">
+									<span style="display: none;"></span>
+							</div>
+							<div class="action-button">
+								<button type="button" class="upload">Выбрать фото</button>
+								<form class="form_group" id="AddPhoto" asp-action="AddPhoto" asp-controller="Asp" enctype="multipart/form-data">
+									<input type="file" id="hidden-upload" name="fileupload" class="hidden-upload" accept="image/*">
+									<input type="text" id="hidden-size" name="filesize" hidden>
+									<button type="button" class="submit" id="save_btn">Сохранить изменения</button>
+								</form>
+								<form class="form_group" asp-action="DeletePhoto" asp-controller="Asp" onsubmit="return confirm('Фотография профиля будет безвозвратно удалена. Вы уверены?')">
+									<button class="delete">Удалить фото профиля</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script src="../js/cropper-main-script.js" type="text/javascript"></script>
+		<script src="../js/cropper.js" type="text/javascript"></script>
+
+	</body>
+</html>

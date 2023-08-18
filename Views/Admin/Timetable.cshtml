@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Расписания</title>
+		<link rel="stylesheet" href="../css/a_timetstyle.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+		<script  src="../js/preloader.js"></script>
+	</head>
+	<body>
+		<div class="wrapper">
+			<header class="header">
+				<div class="container">
+					<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Admin")">
+						<img src="../img/Service/logo.png">
+					</a>
+						<div>
+							<span class="header__name_my">МОЯ</span><span class="header__name_asp">АСПИРАНТУРА</span>
+						</div>
+						<details class="detail__body" data-toggle="dropdown">
+							<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo"><span class="caret" id="caret"></span></summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account", "Admin")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Asps", "Admin")" class="header__link">Аспиранты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs", "Admin")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Grants", "Admin")" class="header__link">Стипендии</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable", "Admin")" class="header__link">Расписания</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts", "Admin")" class="header__link">Контакты</a>
+                                @if(ViewBag.Account.Role == "3" || ViewBag.Account.Role == "admin")
+                                {
+								<li>
+									<a href="@Url.Action("Statistics", "AdminPanel")" class="header__link">Статистика</a>
+								</li>
+                                }
+								</li>
+								<li>
+									<a href="@Url.Action("Logout", "Admin")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+						</details>
+					</div>
+				</div>
+			</header>
+			<div class="content">
+				<div class="container">
+					<div class="content_text">
+						
+						
+						<div class="content_buttons">
+							<div class="button_add">
+								<a class="btn_style" href="#grouppopup">Добавить расписание групп</a>
+							</div>
+							<!--<div class="button_add">
+								<a class="btn_style" href="#profpopup">Добавить расписание профилям подготовки</a>
+							</div>-->
+							<div class="button_add">
+								<a class="btn_style" href="#exampopup">Добавить расписание экзаменов</a>
+							</div>
+							<div class="button_add">
+								<a class="btn_style" href="#kexampopup">Добавить расписание кандидатских экзаменов</a>
+							</div>
+							<div class="button_add">
+								<form class="form_group" asp-action="DelAllTimet" asp-controller="Admin" onsubmit="return confirm('Расписания будут безвозвратно удалены')">
+									<button class="btn_style delete">Удалить все расписания групп и экзаменов</button>
+								</form>
+							</div>
+							<div class="button_add">
+								<form class="form_group" asp-action="DelCandTimet" asp-controller="Admin" onsubmit="return confirm('Расписание будет безвозвратно удалено')">
+									<button class="btn_style delete">Удалить расписание кандидатских экзаменов</button>
+								</form>
+							</div>
+						</div>
+
+						<div id="grouppopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group" asp-action="AddTimetForGroup" asp-controller="Admin" enctype="multipart/form-data">
+										<div class="popup_title">Добавить расписание групп</div>
+										<div class="popup_limits"><div class="limit_name">Имя файла должно строго соответствовать номеру группы</div>Максимум файлов: неограничено<br>
+											Поддерживаемые типы файлов: .pdf</div>
+										<div class="drop_area first">
+											<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+											<header class="drop_header">Перетащите файл</header>
+											<span class="drop_span">или</span>
+											<button type="button" class="btn_style">Выбрать файл</button>
+											<input type="file" name="fileupload" id="fileupload" hidden multiple>
+										</div>
+										<div class="popup_buttons">
+											<button class="submit">Сохранить</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div id="profpopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group" asp-action="AddTimetForProf" asp-controller="Admin" enctype="multipart/form-data">
+										<div class="popup_title">Добавить расписание профилям подготовки</div>
+										<div class="popup_limits"><div class="limit_name">Имя файла должно строго соответствовать профилю подготовки</div>Максимум файлов: неограничено<br>
+											Поддерживаемые типы файлов: .pdf</div>
+										<div class="drop_area second">
+											<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+											<header class="drop_header">Перетащите файл</header>
+											<span class="drop_span">или</span>
+											<button type="button" class="btn_style">Выбрать файл</button>
+											<input type="file" name="fileupload" id="fileupload" hidden multiple>
+										</div>
+										<div class="popup_buttons">
+											<button class="submit">Сохранить</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div id="exampopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group" asp-action="AddTimetExam" asp-controller="Admin" enctype="multipart/form-data">
+										<div class="popup_title">Добавить расписание экзаменов</div>
+										<div class="popup_limits">Максимум файлов: 1<br>
+											Поддерживаемые типы файлов: .pdf</div>
+										<div class="drop_area third">
+											<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+											<header class="drop_header">Перетащите файл</header>
+											<span class="drop_span">или</span>
+											<button type="button" class="btn_style">Выбрать файл</button>
+											<input type="file" name="fileupload" id="fileupload" hidden multiple>
+										</div>
+										<div class="popup_buttons">
+											<button class="submit">Сохранить</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div id="kexampopup" class="popup">
+							<a href="#header" class="popup_area"></a>
+							<div class="popup_body">
+								<div class="popup_content">
+									<a href="#header" class="popup_close"><img src="../img/Service/x.png"></a>
+									<form class="form_group" asp-action="AddTimetCandidate" asp-controller="Admin" enctype="multipart/form-data">
+										<div class="popup_title">Добавить расписание кандидатских экзаменов</div>
+										<div class="popup_limits">Максимум файлов: 1<br>
+											Поддерживаемые типы файлов: Excel</div>
+										<div class="drop_area fourth">
+											<img src="../img/Service/cloud_upload.png" class="drop_area_img"></img>
+											<header class="drop_header">Перетащите файл</header>
+											<span class="drop_span">или</span>
+											<button type="button" class="btn_style">Выбрать файл</button>
+											<input type="file" name="fileupload" id="fileupload" hidden multiple>
+										</div>
+										<div class="popup_buttons">
+											<button class="submit">Сохранить</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script  src="../js/fileloader_a_timet.js"></script>
+		<script  src="../js/script.js"></script>
+		
+	</body>
+</html>

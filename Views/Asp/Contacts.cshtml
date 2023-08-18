@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Контакты</title>
+		<link rel="stylesheet" href="../css/contstyle.css">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+		<script src="../js/preloader.js"></script>
+	</head>
+
+	<body>
+
+	<div class="preloader">
+		<div class="preloader__row">
+			<div class="preloader__item"></div>
+			<div class="preloader__item"></div>
+		</div>
+	</div>
+
+
+	<div class="wrapper">
+		<header class="header">
+			<div class="container">
+				<div class="header__body">
+					<a class="header__logo" href="@Url.Action("Account","Asp")">
+						<img src="../img/Service/logo.png">
+					</a>
+					<a class="header__name" href="@Url.Action("Account","Asp")">
+						<div class="header__name_my">МОЯ</div><div class="header__name_asp">АСПИРАНТУРА</div>
+					</a>
+					<details class="detail__body" data-toggle="dropdown">
+						<summary class="detail__summary"><img class="detail__summary_img" src="../img/Avatars/@ViewBag.Account.Photo">
+						</summary>
+						<nav class="header__menu">
+							<ul class="header__list">
+								<li>
+									<a href="@Url.Action("Account","Asp")" class="header__link">Личный кабинет</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Education","Asp")" class="header__link">Успеваемость</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Docs","Asp")" class="header__link">Документы</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Achievments","Asp")" class="header__link">Достижения</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Timetable","Asp")" class="header__link">Расписание</a>
+								</li>
+								<li>
+									<a href="@Url.Action("News","Asp")" class="header__link">Новости</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Contacts","Asp")" class="header__link">Контакты</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Logout","Asp")" class="header__link">Выйти</a>
+								</li>
+							</ul>
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<div class="container">
+				<div class="content_text">
+					<h1>Центр подготовки научно-педагогических кадров в аспирантуре
+						(отдел Аспирантуры)</h1>
+					<div class="employee_all cap">
+						<h1>@ViewBag.Director.Function</h1>
+						<div class="employee cap">
+							<img class="employee_img" src="../img/Avatars/@ViewBag.Director.Photo">
+							<p>@ViewBag.Director.Name</p>
+							<p>Телефон: @ViewBag.Director.Phone</p>
+						</div>
+					</div>
+					<div class="employee_all">
+						<h1>Сотрудники</h1>
+						@{
+							int i = 0;
+							string type = "";
+							string imgtype = "";
+						}
+						@foreach (var employee in ViewBag.Admins)
+						{
+							<div hidden>@{type = (i % 2 == 0) ? "" : "right";}</div>
+							<div hidden>@{imgtype = (i % 2 == 0) ? "" : "second";}</div>
+							<div class="emp_body">
+								<div class="employee @type">
+								<img class="employee_img @imgtype" src="../img/Avatars/@employee.Photo">
+								<div class="flex_info">
+									<p>@employee.Surname @employee.Name @if(employee.Patronymic != null)@employee.Patronymic</p>
+									<p>Должность: @employee.Function</p>
+									<p>Телефон : @employee.Phone</p>
+									<p>Эл. почта: @employee.Email</p>
+									<p>Кабинет: @employee.Cabinet</p>
+								</div>
+								@if (imgtype == "second")
+								{
+									<img class="employee_img" src="../img/Avatars/@employee.Photo">
+								}
+							</div>
+						</div>
+						<div hidden>@{i=i+1;}</div>
+						}
+					</div>
+					<div class="feedback_body">
+						<button class="show_feedback btn_style" type="button" id="feedback_btn">Обратная связь</button>
+						<form id="feedback_form" class="feedback_form" asp-action="SendFeedback" asp-controller="Asp">
+							<select name="theme" class="feedback_theme">
+  								<option value="NoTheme" disabled selected>Выберите тему обращения</option>
+  								<option value="BadView">Проблемы с отображением страниц или данных</option>
+  								<option value="Bugs">Ошибки в работе системы</option>
+  								<option value="RamAndCPU">Слишком долгая обработка запросов</option>
+  								<option value="UpdateAdvice">Предложения по улучшению</option> 
+  								<option value="Others">Прочее</option>
+							</select>
+							<textarea class="feedback_text" name="message" placeholder="Введите ваше сообщение..."></textarea>
+							<button class="btn_style" type="submit">Отправить</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../js/script.js"></script>
+	<script src="../js/feedback.js"></script>
+	</body>
+</html>
