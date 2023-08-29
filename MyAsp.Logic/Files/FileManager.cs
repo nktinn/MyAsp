@@ -74,7 +74,7 @@ namespace MyAsp.Logic.Files
         }
         public async Task RejectPhotoByUserId(int id)
         {
-            var photo = _context.PM.FirstOrDefault(ph => ph.UserID == id);
+            var photo = _context.PM.FirstOrDefault(pm => pm.UserID == id);
 
             if (photo != null)
             {

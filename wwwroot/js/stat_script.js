@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     tabContent[0].style.display = "block";
 });
 
+let selectedblock = null;
+
 function openTab(evt, tabName) {
     var i, tabContent;
     tabContent = document.getElementsByClassName("tab-content");
@@ -16,24 +18,45 @@ function editProf(button) {
     var index = button.parentNode.querySelector(".index").value;
     var a = document.createElement('a');
     a.href = "#profpopup";
-    console.log(index);
     a.click();
     var popup = document.querySelector("#profpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab1");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#FIO").value = tabBody[index].querySelector("#FIO").innerHTML;
     popup.querySelector("#cnumber").value = tabBody[index].querySelector("#cnumber").innerHTML;
     popup.querySelector("#gnumber").value = tabBody[index].querySelector("#gnumber").innerHTML;
-    popup.querySelector("#stDir").value = tabBody[index].querySelector("#stDir").innerHTML;
-    popup.querySelector("#stProf").value = tabBody[index].querySelector("#stProf").innerHTML;
     popup.querySelector("#theme").value = tabBody[index].querySelector("#theme").innerHTML;
-    popup.querySelector("#scientist").value = tabBody[index].querySelector("#scientist").innerHTML;
     popup.querySelector("#tel").value = tabBody[index].querySelector("#tel").innerHTML;
     popup.querySelector("#mail").value = tabBody[index].querySelector("#email").innerHTML;
     popup.querySelector("#id").value = tabBody[index].querySelector("#id").innerHTML;
+
+    selectedblock = tabBody[index];
+
+    const scientistSelect = popup.querySelector(".popup_input[name='scientist']");
+    const scientistText = tabBody[index].querySelector("#scientist").textContent;
+    const options = Array.from(scientistSelect.options);
+    const optionToUpdate = options[0];
+    optionToUpdate.selected = true;
+    const optionToSelect = options.find(item => item.value == scientistText);
+    if (optionToSelect != undefined)
+        optionToSelect.selected = true;
+
+    const dirSelect = popup.querySelector(".popup_input[name='stDir']");
+    const dirText = tabBody[index].querySelector("#stDir").textContent;
+    const diroptions = Array.from(dirSelect.options);
+    const diroptionToUpdate = diroptions[0];
+    diroptionToUpdate.selected = true;
+    const diroptionToSelect = diroptions.find(item => item.value === dirText);
+    if (diroptionToSelect != undefined) {
+        diroptionToSelect.selected = true;
+    }
+    else {
+        const profSelect = popup.querySelector(".popup_input[name='stProf']");
+        profSelect.innerHTML = '<option value="null">Сначала выберите направление подготовки</option>';
+    }
+
+    const event = new Event("change");
+    dirSelect.dispatchEvent(event);
 }
 
 function editAdm(button) {
@@ -42,11 +65,8 @@ function editAdm(button) {
     a.href = "#adminpopup";
     a.click();
     var popup = document.querySelector("#adminpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab2");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#FIO").value = tabBody[index].querySelector("#FIO").innerHTML;
     popup.querySelector("#function").value = tabBody[index].querySelector("#function").innerHTML;
     popup.querySelector("#cab").value = tabBody[index].querySelector("#cab").innerHTML;
@@ -62,11 +82,8 @@ function editStip(button) {
     a.href = "#stippopup";
     a.click();
     var popup = document.querySelector("#stippopup");
-    console.log(popup);
     var tab = document.querySelector("#tab3");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#name").value = tabBody[index].querySelector("#name").innerHTML;
     popup.querySelector("#amount").value = tabBody[index].querySelector("#amount").innerHTML;
     popup.querySelector("#startDate").value = tabBody[index].querySelector("#startDate").innerHTML;
@@ -81,11 +98,8 @@ function editRes(button) {
     a.href = "#respopup";
     a.click();
     var popup = document.querySelector("#respopup");
-    console.log(popup);
     var tab = document.querySelector("#tab4");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#subj").value = tabBody[index].querySelector("#subj").innerHTML;
     popup.querySelector("#result").value = tabBody[index].querySelector("#result").innerHTML;
     popup.querySelector("#type").value = tabBody[index].querySelector("#type").innerHTML;
@@ -100,11 +114,8 @@ function editTimet(button) {
     a.href = "#timetpopup";
     a.click();
     var popup = document.querySelector("#timetpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab5");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#name").value = tabBody[index].querySelector("#name").innerHTML;
     popup.querySelector("#date").value = tabBody[index].querySelector("#date").innerHTML;
     popup.querySelector("#type").value = tabBody[index].querySelector("#type").innerHTML;
@@ -117,11 +128,8 @@ function editAchiev(button) {
     a.href = "#achievpopup";
     a.click();
     var popup = document.querySelector("#achievpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab6");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#name").value = tabBody[index].querySelector("#name").innerHTML;
     popup.querySelector("#date").value = tabBody[index].querySelector("#date").innerHTML;
     popup.querySelector("#aspId").value = tabBody[index].querySelector("#aspId").innerHTML;
@@ -134,11 +142,8 @@ function editDoc(button) {
     a.href = "#docpopup";
     a.click();
     var popup = document.querySelector("#docpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab7");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#name").value = tabBody[index].querySelector("#name").innerHTML;
     popup.querySelector("#date").value = tabBody[index].querySelector("#date").innerHTML;
     popup.querySelector("#aspId").value = tabBody[index].querySelector("#aspId").innerHTML;
@@ -151,11 +156,8 @@ function editScience(button) {
     a.href = "#sciencepopup";
     a.click();
     var popup = document.querySelector("#sciencepopup");
-    console.log(popup);
     var tab = document.querySelector("#tab8");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#FIO").value = tabBody[index].querySelector("#FIO").innerHTML;
     popup.querySelector("#degree").value = tabBody[index].querySelector("#degree").innerHTML;
     popup.querySelector("#depart").value = tabBody[index].querySelector("#depart").innerHTML;
@@ -170,11 +172,8 @@ function editDirection(button) {
     a.href = "#directpopup";
     a.click();
     var popup = document.querySelector("#directpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab9");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#depart").value = tabBody[index].querySelector("#depart").innerHTML;
     popup.querySelector("#prof").value = tabBody[index].querySelector("#prof").innerHTML;
     popup.querySelector("#name").value = tabBody[index].querySelector("#name").innerHTML;
@@ -187,11 +186,8 @@ function editNew(button) {
     a.href = "#newspopup";
     a.click();
     var popup = document.querySelector("#newspopup");
-    console.log(popup);
     var tab = document.querySelector("#tab10");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#info").value = tabBody[index].querySelector("#info").innerHTML;
     popup.querySelector("#link").value = tabBody[index].querySelector("#link").innerHTML;
     popup.querySelector("#date").value = tabBody[index].querySelector("#date").innerHTML;
@@ -204,13 +200,41 @@ function editPM(button) {
     a.href = "#pmpopup";
     a.click();
     var popup = document.querySelector("#pmpopup");
-    console.log(popup);
     var tab = document.querySelector("#tab11");
-    console.log(tab);
     var tabBody = tab.querySelectorAll("tbody");
-    console.log(tabBody);
     popup.querySelector("#file").value = tabBody[index].querySelector("#file").innerHTML;
     popup.querySelector("#date").value = tabBody[index].querySelector("#date").innerHTML;
     popup.querySelector("#aspid").value = tabBody[index].querySelector("#aspid").innerHTML;
     popup.querySelector("#id").value = tabBody[index].querySelector("#id").innerHTML;
 }
+
+
+const hidden_div = document.querySelector(".hidden_div");
+const profpopup = document.getElementById("profpopup");
+const directionSelector = profpopup.querySelector(".popup_input[name='stDir']");
+
+directionSelector.addEventListener("change", function () {
+
+    const profText = selectedblock.querySelector("#stProf").textContent;
+    const profSelect = profpopup.querySelector(".popup_input[name='stProf']");
+
+    const dirText = directionSelector.value;
+    const dirBlocks = document.querySelectorAll(".dir-block");
+    profSelect.innerHTML = '<option value="null">Выберите профиль подготовки</option>';
+    dirBlocks.forEach(block => {
+        const dirName = block.querySelector("#name");
+        if (dirName.textContent === dirText) {
+            const profName = block.querySelector("#profile");
+            const option = document.createElement("option");
+            option.value = profName.textContent;
+            option.text = profName.textContent;
+            profSelect.appendChild(option);
+        }
+    });
+
+    const profoptions = Array.from(profSelect.options);
+    const profoptionToSelect = profoptions.find(item => item.value === profText);
+    if (profoptionToSelect != undefined) {
+        profoptionToSelect.selected = true;
+    }
+});

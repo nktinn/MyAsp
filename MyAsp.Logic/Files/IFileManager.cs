@@ -5,5 +5,6 @@
         public Task UpdatePhoto(int id, string file);
         public Task AcceptPhoto(int id);
         public Task RejectPhoto(int id);
+        public Task RejectPhotoByUserId(int id);
     }
 }

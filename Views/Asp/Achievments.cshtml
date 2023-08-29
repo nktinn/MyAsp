@@ -4,6 +4,7 @@
 <head>
 	<title>Мои достижения</title>
 	<link rel="stylesheet" href="../css/achievstyle.css">
+		<link rel="stylesheet" href="../css/messagebox.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
@@ -65,6 +66,11 @@
 				</div>
 			</div>
 		</header>
+
+			<input hidden value="@ViewBag.Message" id="notificationValue">
+			<div class="notification" id="notification">
+			</div>
+
 		<div class="content">
 			<div class="container">
 				<div class="content_text">
@@ -127,6 +133,7 @@
 	</div>
 
 	<script src="../js/fileloader.js"></script>
+	<script src="../js/messagebox.js" type="text/javascript"></script>
 	<script src="../js/script.js"></script>
 
 </body>

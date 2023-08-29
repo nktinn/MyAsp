@@ -184,6 +184,10 @@ namespace MyAsp.Controllers
             else
             {
                 ViewBag.Account = account;
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 ViewBag.PM = _aspmngr.OnModeration(account.Id);
                 return View();
             }
@@ -245,6 +249,10 @@ namespace MyAsp.Controllers
             {
                 ViewBag.Account = account;
                 ViewBag.Docs = _aspmngr.GetAchievments(account);
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 return View();
             }
         }
@@ -316,6 +324,10 @@ namespace MyAsp.Controllers
                     ViewBag.Account = account;
                     var admins = _aspmngr.GetAdmins();
                     ViewBag.Admins = admins.Select(a => new { Name = a.Name, Surname = a.Surname, Patronymic = a.Patronymic, Photo = a.Photo, Function = a.Function, Phone = a.Phone, Email = a.Email, Cabinet = a.Cabinet, Role = a.Role }).ToList();
+                    if (TempData["Message"] != null)
+                        ViewBag.Message = TempData["Message"];
+                    else
+                        ViewBag.Message = 0;
                     return View();
                 }
                 catch (Exception ex)
@@ -350,6 +362,7 @@ namespace MyAsp.Controllers
                 account.Email = email;
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
 
                 return RedirectToAction("Account", "Asp");
             }
@@ -366,15 +379,25 @@ namespace MyAsp.Controllers
             }
             else
             {
-                var hashstring = GetHashCode(oldpass, account.Login);
-                if (hashstring == account.Password || hashstring == account.TmpPassword)
+                if (oldpass != null && newpass != null && newpass2 != null)
                 {
-                    if (newpass == newpass2)
+                    var hashstring = GetHashCode(oldpass, account.Login);
+                    if (hashstring == account.Password || hashstring == account.TmpPassword)
                     {
-                        account.Password = GetHashCode(newpass, account.Login);
-                        await _accmngr.UpdateContext();
+                        if (newpass == newpass2)
+                        {
+                            account.Password = GetHashCode(newpass, account.Login);
+                            await _accmngr.UpdateContext();
+                            TempData["Message"] = 1;
+                        }
+                        else
+                            TempData["Message"] = 2;
                     }
+                    else
+                        TempData["Message"] = 2;
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Account", "Asp");
             }
         }
@@ -425,7 +448,11 @@ namespace MyAsp.Controllers
                     await _filemngr.UpdatePhoto(aspaccount.Id, newFileName);
                     await _accmngr.UpdateContext();
 
+                    TempData["Message"] = 3;
                 }
+                else
+                    TempData["Message"] = 2;
+
                 return RedirectToAction("Account", "Asp");
             }
         }
@@ -496,19 +523,23 @@ namespace MyAsp.Controllers
                         }
                         else
                         {
-                            achiev.Name = "Документ";
+                            achiev.Name = "Достижение";
                         }
                         achiev.File = newFileName;
                         achiev.Date = DateOnly.FromDateTime(DateTime.Now);
                         achiev.UserID = aspaccount.Id;
 
                         await _aspmngr.AddAchiev(achiev);
+                        TempData["Message"] = 1;                    
                     }
                     catch (Exception ex)
                     { 
+                        TempData["Message"] = 2;
                     }
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Achievments", "Asp");
             }
         }
@@ -537,9 +568,7 @@ namespace MyAsp.Controllers
                     }
                     catch (Exception ex)
                     { }
-                }
-                if (file != null)
-                {
+
                     await _aspmngr.RemoveAchiev(file);
                 }
                 return RedirectToAction("Achievments", "Asp");
@@ -559,9 +588,41 @@ namespace MyAsp.Controllers
             {
                 if (message != null)
                 {
-                    await _aspmngr.SendFeedBack(account, theme, message);
+                    bool isSent = await _aspmngr.SendFeedBack(account, theme, message);
+                    if (isSent)
+                        TempData["Message"] = 4;
+                    else
+                        TempData["Message"] = 2;
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Contacts", "Asp");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelPM()
+        {
+            var account = _aspmngr.GetByLogin(User.Identity.Name);
+            if (account == null)
+            {
+                await HttpContext.SignOutAsync("UserCookieScheme");
+                return RedirectToAction("Login", "Asp");
+            }
+            else
+            {
+                bool onModer = _aspmngr.OnModeration(account.Id);
+                if (onModer)
+                {
+                    await _filemngr.RejectPhotoByUserId(account.Id);
+                    TempData["Message"] = 1;
+                }
+                else
+                {
+                    TempData["Message"] = 2;
+                }
+
+                return RedirectToAction("Account", "Asp");
             }
         }
 

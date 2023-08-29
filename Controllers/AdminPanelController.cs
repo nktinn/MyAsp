@@ -52,6 +52,10 @@ namespace MyAsp.Controllers
             {
                 if (account.Role == "3" || account.Role == "admin")
                 {
+                    if (TempData["Message"] != null)
+                        ViewBag.Message = TempData["Message"];
+                    else
+                        ViewBag.Message = 0;
                     ViewBag.Account = account;
                     ViewBag.Asps = _admmngr.GetAsps();
                     ViewBag.Adms = _admmngr.GetAdmins();
@@ -61,6 +65,7 @@ namespace MyAsp.Controllers
                     ViewBag.Achievments = _admmngr.GetAllAchievments();
                     ViewBag.Docs = _admmngr.GetDocs();
                     ViewBag.Scientists = _admmngr.GetScientists();
+                    ViewBag.UniqueDir = _admmngr.GetUniqDir();
                     ViewBag.Directions = _admmngr.GetDirections();
                     ViewBag.News = _admmngr.GetNews();
                     ViewBag.PM = _admmngr.GetAllPM();
@@ -226,8 +231,15 @@ namespace MyAsp.Controllers
             grant.ExpiryDate = DateOnly.FromDateTime(Convert.ToDateTime(endDate));
             grant.UserID = Convert.ToInt32(aspId);
 
-            await _admmngr.AddGrant(grant);
-
+            try
+            {
+                await _admmngr.AddGrant(grant);
+                TempData["Message"] = 1;
+            }
+            catch(Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             await _accmngr.UpdateContext();
             return RedirectToAction("Statistics", "AdminPanel");
         }
@@ -240,7 +252,15 @@ namespace MyAsp.Controllers
             res.Type = type;
             res.Date = DateOnly.FromDateTime(Convert.ToDateTime(date));
 
-            await _admmngr.AddResult(res);
+            try
+            {
+                await _admmngr.AddResult(res);
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
 
             await _accmngr.UpdateContext();
             return RedirectToAction("Statistics", "AdminPanel");
@@ -254,7 +274,15 @@ namespace MyAsp.Controllers
             scientist.Phone = tel;
             scientist.Email = mail;
 
-            await _admmngr.AddScientist(scientist);
+            try
+            {
+                await _admmngr.AddScientist(scientist);
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
 
             await _accmngr.UpdateContext();
             return RedirectToAction("Statistics", "AdminPanel");
@@ -266,7 +294,15 @@ namespace MyAsp.Controllers
             direction.Profile = prof;
             direction.Department = depart;
 
-            await _admmngr.AddDirection(direction);
+            try
+            {
+                await _admmngr.AddDirection(direction);
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
 
             await _accmngr.UpdateContext();
             return RedirectToAction("Statistics", "AdminPanel");
@@ -304,16 +340,29 @@ namespace MyAsp.Controllers
                     catch (Exception ex)
                     { }
                 }
+                await _admmngr.RemoveAspById(Convert.ToInt32(id));
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
-            await _admmngr.RemoveAspById(Convert.ToInt32(id));
+            else
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteAdmin(string id)
         {
-            await _admmngr.RemoveAdminById(Convert.ToInt32(id));
-
             var admin = _admmngr.GetAdminById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveAdminById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
+
             string message = $"Администратор {admin.Login} - {admin.Surname} {admin.Name} удален";
             await _admmngr.SendInfo("Удален администратор", message);
 
@@ -321,47 +370,119 @@ namespace MyAsp.Controllers
         }
         public async Task<IActionResult> DeleteGrant(string id)
         {
-            await _admmngr.RemoveGrantById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveGrantById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch(Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteResult(string id)
         {
-            await _admmngr.RemoveResById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveResById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch(Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteTimetable(string id)
         {
-            await _admmngr.RemoveTimetById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveTimetById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteAchievment(string id)
         {
-            await _admmngr.RemoveAchievById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveAchievById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch(Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteDoc(string id)
         {
-            await _admmngr.RemoveDocById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveDocById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteScientist(string id)
         {
-            await _admmngr.RemoveScienceById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveScienceById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteDirection(string id)
         {
-            await _admmngr.RemoveDirectById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveDirectById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeleteNew(string id)
         {
-            await _admmngr.RemoveNewById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemoveNewById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         public async Task<IActionResult> DeletePM(string id)
         {
-            await _admmngr.RemovePMById(Convert.ToInt32(id));
+            try
+            {
+                await _admmngr.RemovePMById(Convert.ToInt32(id));
+                TempData["Message"] = 1;
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = 2;
+            }
             return RedirectToAction("Statistics", "AdminPanel");
         }
         #endregion
@@ -394,9 +515,11 @@ namespace MyAsp.Controllers
                     asp.ScientistID = null;
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -421,14 +544,14 @@ namespace MyAsp.Controllers
                 admin.Phone = tel;
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
+
+                string message = $"Администратор {admin.Login} - {admin.Surname} {admin.Name} изменен";
+                await _admmngr.SendInfo("Изменен администратор", message);
             }
             catch (Exception ex)
             {
-            }
-            finally
-            {
-                string message = $"Администратор {admin.Login} - {admin.Surname} {admin.Name} изменен";
-                await _admmngr.SendInfo("Изменен администратор", message);
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -446,9 +569,11 @@ namespace MyAsp.Controllers
                 grant.UserID = Convert.ToInt32(id);
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -466,9 +591,11 @@ namespace MyAsp.Controllers
                 res.UserID = Convert.ToInt32(id);
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -484,9 +611,11 @@ namespace MyAsp.Controllers
                 timet.Type = type;
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -502,14 +631,16 @@ namespace MyAsp.Controllers
                 achiev.UserID = Convert.ToInt32(aspId);
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
         }
-        public async Task<IActionResult> UpdateDoc(string name, string date, string aspId, string id)
+        public async Task<IActionResult> UpdateDocument(string name, string date, string aspId, string id)
         {
             var doc = _admmngr.GetDocById(Convert.ToInt32(id));
 
@@ -520,9 +651,11 @@ namespace MyAsp.Controllers
                 doc.UserID = Convert.ToInt32(aspId);
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -540,9 +673,11 @@ namespace MyAsp.Controllers
                 science.Email = mail;
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -558,14 +693,16 @@ namespace MyAsp.Controllers
                 dir.Department = depart;
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
         }
-        public async Task<IActionResult> UpdateNew(string info, string link, string date, string id)
+        public async Task<IActionResult> UpdateNews(string info, string link, string date, string id)
         {
             var news = _admmngr.GetNewById(Convert.ToInt32(id));
 
@@ -576,9 +713,11 @@ namespace MyAsp.Controllers
                 news.Date = DateOnly.FromDateTime(Convert.ToDateTime(date));
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
-            catch
+            catch(Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");
@@ -594,9 +733,11 @@ namespace MyAsp.Controllers
                 pm.UserID = Convert.ToInt32(id);
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
             }
             catch (Exception ex)
             {
+                TempData["Message"] = 2;
             }
 
             return RedirectToAction("Statistics", "AdminPanel");

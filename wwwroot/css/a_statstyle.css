@@ -551,6 +551,10 @@ summary::-webkit-details-marker {
           appearance: none;
 }
 
+.hidden_div {
+    display: none;
+}
+
 /*Adaptive*/
 @media (max-width: 1900px) {
   .content {

@@ -82,11 +82,11 @@ namespace MyAsp.Logic.Accounts
         #region "Запрос расписаний"
         public List<Timetable> GetPairs(User account)
         {
-            return _context.Timetables.Where(t => t.Type == "1" && t.Name == account.GNumber).ToList();
+            return _context.Timetables.Where(t => t.Type == "1" && t.Name.Contains(account.GNumber)).ToList();
         }
         public List<Timetable> GetExams(User account)
         {
-            return _context.Timetables.Where(t => t.Type == "2" && t.Name == account.GNumber).ToList();
+            return _context.Timetables.Where(t => t.Type == "2" && t.Name.Contains(account.GNumber)).ToList();
         }
         public List<Timetable> GetCandidate()
         {

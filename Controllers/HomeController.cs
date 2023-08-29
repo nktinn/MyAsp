@@ -13,7 +13,8 @@ namespace MyAsp.Controllers
             {
                 return View("NotFound");
             }
-            return View();
+            else 
+                return View();
         }
 
     }

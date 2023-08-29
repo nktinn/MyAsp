@@ -123,6 +123,16 @@ namespace MyAsp.Logic.Accounts
             var achiev = _context.Achievments.FirstOrDefault(a => a.Id == id);
             if (achiev != null)
             {
+                string prevPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/achievments/", achiev.File);
+
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(prevPath);
+                    if (fileInfo.Exists)
+                        fileInfo.Delete();
+                }
+                catch (Exception ex)
+                { }
                 _context.Achievments.Remove(achiev);
                 await _context.SaveChangesAsync();
             }
@@ -218,6 +228,21 @@ namespace MyAsp.Logic.Accounts
         }
         public async Task AddTimetable(Timetable tt)
         {
+            var timet = _context.Timetables.Where(t => t.Name == tt.Name && t.Type == tt.Type).FirstOrDefault();
+            if (timet != null)
+            {
+                string prevPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/timetables/", timet.File);
+
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(prevPath);
+                    if (fileInfo.Exists)
+                        fileInfo.Delete();
+                }
+                catch (Exception ex)
+                { }
+                _context.Timetables.Remove(timet);
+            }
             await _context.Timetables.AddAsync(tt);
         }
         public List<Timetable>? GetTimetables()
@@ -229,6 +254,16 @@ namespace MyAsp.Logic.Accounts
             var timet = _context.Timetables.FirstOrDefault(t => t.Id == id);
             if (timet != null)
             {
+                string prevPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/timetables/", timet.File);
+
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(prevPath);
+                    if (fileInfo.Exists)
+                        fileInfo.Delete();
+                }
+                catch (Exception ex)
+                { }
                 _context.Timetables.Remove(timet);
                 await _context.SaveChangesAsync();
             }
@@ -259,6 +294,16 @@ namespace MyAsp.Logic.Accounts
             var pm = _context.PM.FirstOrDefault(pm => pm.Id == id);
             if (pm != null)
             {
+                string prevPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/Avatars/", pm.File);
+
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(prevPath);
+                    if (fileInfo.Exists)
+                        fileInfo.Delete();
+                }
+                catch (Exception ex)
+                { }
                 _context.PM.Remove(pm);
                 await _context.SaveChangesAsync();
             }
@@ -305,6 +350,13 @@ namespace MyAsp.Logic.Accounts
         public List<Direction>? GetDirections()
         {
             return _context.Directions.ToList();
+        }
+        public List<Direction>? GetUniqDir()
+        {
+            return _context.Directions
+            .GroupBy(direction => direction.Name)
+            .Select(group => group.First()) // Выбрать первую запись из каждой группы
+            .ToList();
         }
         public async Task RemoveDirectById(int id)
         {

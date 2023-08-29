@@ -94,6 +94,10 @@ namespace MyAsp.Controllers
             else
             {
                 ViewBag.Account = account;
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 return View();
             }
         }
@@ -115,6 +119,13 @@ namespace MyAsp.Controllers
                 }
                 else
                     ViewBag.Asps = new List<User>();
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
+                ViewBag.Scientists = _admmngr.GetScientists();
+                ViewBag.UniqueDir = _admmngr.GetUniqDir();
+                ViewBag.Directions = _admmngr.GetDirections();
                 ViewBag.Account = account;
                 ViewBag.PM_Count = _admmngr.GetPMCount();
                 return View();
@@ -147,6 +158,10 @@ namespace MyAsp.Controllers
                 }
                 else
                     ViewBag.Asps = new List<User>();
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 ViewBag.Asp1 = null;
                 ViewBag.Asp2 = null;
                 return View();
@@ -164,6 +179,10 @@ namespace MyAsp.Controllers
             else
             {
                 ViewBag.Account = account;
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 return View();
             }
         }
@@ -194,6 +213,10 @@ namespace MyAsp.Controllers
                 }
                 else
                     ViewBag.Asps = new List<User>();
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 ViewBag.Asp1 = null;
                 ViewBag.Asp2 = null;
                 return View();
@@ -212,6 +235,10 @@ namespace MyAsp.Controllers
             {
                 ViewBag.Account = account;
                 ViewBag.Admins = _admmngr.GetAdmins();
+                if (TempData["Message"] != null)
+                    ViewBag.Message = TempData["Message"];
+                else
+                    ViewBag.Message = 0;
                 return View();
             }
         }
@@ -267,12 +294,14 @@ namespace MyAsp.Controllers
                     account.Cabinet = cabinet;
                     account.Phone = phone;
                     account.Email = email;
+
+                    await _accmngr.UpdateContext();
+                    TempData["Message"] = 1;
                 }
                 catch (Exception ex)
                 {
+                    TempData["Message"] = 2;
                 }
-
-                await _accmngr.UpdateContext();
 
                 return RedirectToAction("Account", "Admin");
             }
@@ -289,14 +318,24 @@ namespace MyAsp.Controllers
             }
             else
             {
-                if (GetHashCode(oldpass, account.Login) == account.Password)
+                if (oldpass != null && newpass != null && newpass2 != null)
                 {
-                    if (newpass == newpass2)
+                    if (GetHashCode(oldpass, account.Login) == account.Password)
                     {
-                        account.Password = GetHashCode(newpass, account.Login);
-                        await _accmngr.UpdateContext();
+                        if (newpass == newpass2)
+                        {
+                            account.Password = GetHashCode(newpass, account.Login);
+                            await _accmngr.UpdateContext();
+                            TempData["Message"] = 1;
+                        }
+                        else
+                            TempData["Message"] = 2;
                     }
+                    else
+                        TempData["Message"] = 2;
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Account", "Admin");
             }
         }
@@ -359,8 +398,11 @@ namespace MyAsp.Controllers
                     aspaccount.Photo = newFileName;
 
                     await _accmngr.UpdateContext();
+                    TempData["Message"] = 1;
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Account", "Admin");
             }
         }
@@ -392,6 +434,7 @@ namespace MyAsp.Controllers
                 account.Photo = "alt.png";
 
                 await _accmngr.UpdateContext();
+                TempData["Message"] = 1;
 
                 return RedirectToAction("Account", "Admin");
             }
@@ -446,8 +489,10 @@ namespace MyAsp.Controllers
                         }
                     }
                     await _accmngr.UpdateContext();
-
+                    TempData["Message"] = 1;
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Grants", "Admin");
             }
         }
@@ -483,9 +528,12 @@ namespace MyAsp.Controllers
                         {
                         }
                     }
+                    TempData["Message"] = 1;
                     await _accmngr.UpdateContext();
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Docs", "Admin");
             }
         }
@@ -686,8 +734,13 @@ namespace MyAsp.Controllers
                         await RemoveAspCookie(aspaccount.Login);
                         await _admmngr.RemoveAsp(aspaccount);
                         await _accmngr.UpdateContext();
+                        TempData["Message"] = 1;
                     }
+                    else
+                        TempData["Message"] = 2;
                 }
+                else
+                    TempData["Message"] = 2;
 
                 return RedirectToAction("Asps", "Admin");
             }
@@ -743,11 +796,15 @@ namespace MyAsp.Controllers
 
                             await RemoveAspCookie(account.Login);
                             await _admmngr.RemoveAsp(aspaccount);
+                            TempData["Message"] = 1;
                         }
+                        else
+                            TempData["Message"] = 2;
                     }
-
                     await _accmngr.UpdateContext();
                 }
+                else
+                    TempData["Message"] = 2;
 
                 return RedirectToAction("Asps", "Admin");
             }
@@ -782,8 +839,11 @@ namespace MyAsp.Controllers
                         await _admmngr.RemoveTimetable(tt);
                     }
 
+                    TempData["Message"] = 1;
                     await _accmngr.UpdateContext();
                 }
+                else 
+                    TempData["Message"] = 2;
                 return RedirectToAction("Timetable", "Admin");
             }
         }
@@ -817,9 +877,11 @@ namespace MyAsp.Controllers
                         await _admmngr.RemoveTimetable(tt);
                     }
 
-
+                    TempData["Message"] = 1;
                     await _accmngr.UpdateContext();
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Timetable", "Admin");
             }
         }
@@ -857,12 +919,16 @@ namespace MyAsp.Controllers
 
                         await _admmngr.AddTimetable(tt);
                         await _accmngr.UpdateContext();
+                        TempData["Message"] = 1;
                     }
                     catch (Exception ex)
                     {
+                        TempData["Message"] = 2;
                     }
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Timetable", "Admin");
             }
         }
@@ -901,12 +967,16 @@ namespace MyAsp.Controllers
 
                         await _admmngr.AddTimetable(tt);
                         await _accmngr.UpdateContext();
+                        TempData["Message"] = 1;
                     }
                     catch (Exception ex)
                     {
+                        TempData["Message"] = 2;
                     }
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Timetable", "Admin");
             }
         }
@@ -945,12 +1015,16 @@ namespace MyAsp.Controllers
 
                         await _admmngr.AddTimetable(tt);
                         await _accmngr.UpdateContext();
+                        TempData["Message"] = 1;
                     }
                     catch (Exception ex)
                     {
+                        TempData["Message"] = 2;
                     }
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Timetable", "Admin");
             }
         }
@@ -989,12 +1063,16 @@ namespace MyAsp.Controllers
 
                         await _admmngr.AddTimetable(tt);
                         await _accmngr.UpdateContext();
+                        TempData["Message"] = 1;
                     }
                     catch (Exception ex)
                     {
+                        TempData["Message"] = 2;
                     }
 
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Timetable", "Admin");
             }
         }
@@ -1101,7 +1179,10 @@ namespace MyAsp.Controllers
                 {
                     await RemoveAdmCookie(adminemail);
                     await _admmngr.RemoveAdmin(adminemail);
+                    TempData["Message"] = 1;
                 }
+                else
+                    TempData["Message"] = 2;
 
                 return RedirectToAction("Contacts", "Admin");
             }
@@ -1157,9 +1238,11 @@ namespace MyAsp.Controllers
                     string jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/director.json");
                     string jsonString = JsonSerializer.Serialize(Director, new JsonSerializerOptions { WriteIndented = true });
                     System.IO.File.WriteAllText(jsonPath, jsonString);
+                    TempData["Message"] = 1;
                 }
                 catch (Exception ex)
                 {
+                    TempData["Message"] = 2;
                 }
 
                 return RedirectToAction("Contacts", "Admin");
@@ -1220,6 +1303,7 @@ namespace MyAsp.Controllers
                 }
                 else
                 {
+                    TempData["Message"] = 2;
                     return RedirectToAction("Asps", "Admin");
                 }
             }
@@ -1304,7 +1388,10 @@ namespace MyAsp.Controllers
                     var end = DateOnly.FromDateTime(Convert.ToDateTime(secondDate));
                     asp.GNumber = $"В академическом отпуске с {start} по {end}";
                     await _accmngr.UpdateContext();
+                    TempData["Message"] = 1;
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Asps", "Admin");
             }
         }
@@ -1366,6 +1453,10 @@ namespace MyAsp.Controllers
             else
             {
                 var res = _admmngr.GetResults();
+                if (res != null)
+                    TempData["Message"] = 1;
+                else
+                    TempData["Message"] = 2;
                 foreach (var result in res)
                 {
                     if (result.Type != "2")
@@ -1413,9 +1504,11 @@ namespace MyAsp.Controllers
                         asp.ScientistID = null;
 
                     await _accmngr.UpdateContext();
+                    TempData["Message"] = 1;
                 }
                 catch (Exception ex)
                 {
+                    TempData["Message"] = 2;
                 }
                 return RedirectToAction("Asps", "Admin");
             }
@@ -1437,7 +1530,10 @@ namespace MyAsp.Controllers
                 {
                     admin.Role = lvl;
                     await _accmngr.UpdateContext();
+                    TempData["Message"] = 1;
                 }
+                else
+                    TempData["Message"] = 2;
                 return RedirectToAction("Contacts", "Admin");
             }
         }
@@ -1465,6 +1561,7 @@ namespace MyAsp.Controllers
                     await _admmngr.AddScientist(science);
 
                     await _accmngr.UpdateContext();
+                    TempData["Message"] = 1;
                 }
                 if (file != null)
                 {
@@ -1613,8 +1710,6 @@ namespace MyAsp.Controllers
 
 
         /*Private system actions*/
-        
-
         
 
 

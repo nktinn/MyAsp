@@ -4,6 +4,7 @@
 <head>
     <title>Статистика</title>
     <link rel="stylesheet" href="../css/a_statstyle.css">
+	<link rel="stylesheet" href="../css/messagebox.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
@@ -59,6 +60,20 @@
                 </div>
             </div>
         </header>
+        
+            <input hidden value="@ViewBag.Message" id="notificationValue">
+			<div class="notification" id="notification">
+			</div>
+			<div class="hidden_div">
+			    @foreach(var dir in ViewBag.Directions)
+				{
+				<div class="dir-block">
+				    <div id="name">@dir.Name</div>
+					<div id="profile">@dir.Profile</div>
+				</div>
+				}
+			</div>
+
         <div class="content">
             <div class="container">
                 <div class="content_text">
@@ -510,13 +525,25 @@
                             <div>Номер группы</div>
                             <input class="popup_input" type="text" name="gnumber" id="gnumber" placeholder="Номер группы">
                             <div>Направление подг.</div>
-                            <input class="popup_input" type="text" name="stDir" id="stDir" placeholder="Направление подг.">
+								<select class="popup_input" name="stDir">
+								    <option value="null">Выберите направление подготовки</option>
+									@foreach(var dir in ViewBag.UniqueDir)
+									{
+									    <option value="@dir.Name">@dir.Name</option>
+									}
+								</select>
                             <div>Профиль подг.</div>
-                            <input class="popup_input" type="text" name="stProf" id="stProf" placeholder="Профиль подг.">
+							<select class="popup_input" name="stProf"></select>
                             <div>Тема работы</div>
                             <input class="popup_input" type="text" name="theme" id="theme" placeholder="Тема работы">
                             <div>Науч. рук.</div>
-                            <input class="popup_input" type="text" name="scientist" id="scientist" placeholder="Науч. рук.">
+								<select class="popup_input" name="scientist">
+								    <option value="null">Выберите научного руководителя</option>
+									@foreach(var scientist in ViewBag.Scientists)
+									{
+										<option value="@scientist.Id">@scientist.Name</option>
+									}
+								</select>
                             <div>Телефон</div>
                             <input class="popup_input" type="tel" name="tel" id="tel" placeholder="Телефон">
                             <div>Почта</div>
@@ -911,7 +938,7 @@
                             <div>Название</div>
                             <input class="popup_input" type="text" name="name" id="name" placeholder="Название">
                             <div>Профиль</div>
-                            <input class="popup_input" type="text" name=""prof id="prof" placeholder="Профиль">
+                            <input class="popup_input" type="text" name="prof" id="prof" placeholder="Профиль">
                             <div>Кафедра</div>
                             <input class="popup_input" type="text" name="depart" id="depart" placeholder="Кафедра">
                             <button class="submit" onclick="location.href='#header'">Сохранить</button>
@@ -927,6 +954,8 @@
     </div>
 </body>
 
+	<script src="../js/messagebox.js" type="text/javascript"></script>
     <script src="../js/stat_script.js"></script>
+	<script src="../js/script.js"></script>
 
 </html>

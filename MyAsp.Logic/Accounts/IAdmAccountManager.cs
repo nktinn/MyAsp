@@ -78,6 +78,7 @@
 
         #region "Направления подготовки"
         public List<Direction>? GetDirections();
+        public List<Direction>? GetUniqDir();
         public Task RemoveDirectById(int id);
         public Task AddDirection(Direction direction);
         public Direction? GetDirectById(int id);
