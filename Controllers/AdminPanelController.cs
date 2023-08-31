@@ -106,8 +106,11 @@ namespace MyAsp.Controllers
                     aspaccount.CNumber = cnumber;
                     aspaccount.Login = $"asp{aspaccount.CNumber.Replace("/", "")}";
                     aspaccount.GNumber = gnumber;
-                    aspaccount.StDirection = stDir;
-                    if (stProf != null)
+                    if (stDir != "NULL")
+                        aspaccount.StDirection = stDir;
+                    else
+                        aspaccount.StDirection = null;
+                    if (stProf != "NULL")
                         aspaccount.ProfDirection = stProf;
                     else
                         aspaccount.ProfDirection = null;
@@ -502,8 +505,14 @@ namespace MyAsp.Controllers
                     asp.Patronymic = null;
                 asp.CNumber = cnumber;
                 asp.GNumber = gnumber;
-                asp.StDirection = stDir;
-                asp.ProfDirection = stProf;
+                if (stDir != "NULL")
+                    asp.StDirection = stDir;
+                else
+                    asp.StDirection = null;
+                if (stProf != "NULL")
+                    asp.ProfDirection = stProf;
+                else
+                    asp.ProfDirection = null;
                 asp.WTheme = theme;
                 asp.Phone = tel;
                 asp.Email = mail;
@@ -745,6 +754,5 @@ namespace MyAsp.Controllers
         #endregion
 
 
-        
     }
 }

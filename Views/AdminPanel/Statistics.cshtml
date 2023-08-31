@@ -526,7 +526,7 @@
                             <input class="popup_input" type="text" name="gnumber" id="gnumber" placeholder="Номер группы">
                             <div>Направление подг.</div>
 								<select class="popup_input" name="stDir">
-								    <option value="null">Выберите направление подготовки</option>
+								    <option value="NULL">Выберите направление подготовки</option>
 									@foreach(var dir in ViewBag.UniqueDir)
 									{
 									    <option value="@dir.Name">@dir.Name</option>
@@ -538,7 +538,7 @@
                             <input class="popup_input" type="text" name="theme" id="theme" placeholder="Тема работы">
                             <div>Науч. рук.</div>
 								<select class="popup_input" name="scientist">
-								    <option value="null">Выберите научного руководителя</option>
+								    <option value="NULL">Выберите научного руководителя</option>
 									@foreach(var scientist in ViewBag.Scientists)
 									{
 										<option value="@scientist.Id">@scientist.Name</option>
@@ -805,13 +805,31 @@
                             <div>Номер группы</div>
                             <input class="popup_input" type="text" name="gnumber" id="gnumber" placeholder="Номер группы">
                             <div>Направление подг.</div>
-                            <input class="popup_input" type="text" name="stDir" id="stDir" placeholder="Направление подг.">
+								<select class="popup_input" name="stDir">
+								    <option value="NULL">Выберите направление подготовки</option>
+									@foreach(var dir in ViewBag.UniqueDir)
+									{
+									    <option value="@dir.Name">@dir.Name</option>
+									}
+								</select>
                             <div>Профиль подг.</div>
-                            <input class="popup_input" type="text" name="stProf" id="stProf" placeholder="Профиль подг.">
+								<select class="popup_input" name="stDir">
+								    <option value="NULL">Выберите профиль подготовки</option>
+									@foreach(var dir in ViewBag.Directions)
+									{
+									    <option value="@dir.Profile">@dir.Profile</option>
+									}
+								</select>
                             <div>Тема работы</div>
                             <input class="popup_input" type="text" name="theme" id="theme" placeholder="Тема работы">
                             <div>Науч. рук.</div>
-                            <input class="popup_input" type="text" name="scientist" id="scientist" placeholder="Науч. рук.">
+								<select class="popup_input" name="scientist">
+								    <option value="NULL">Выберите научного руководителя</option>
+									@foreach(var scientist in ViewBag.Scientists)
+									{
+										<option value="@scientist.Id">@scientist.Name</option>
+									}
+								</select>
                             <div>Телефон</div>
                             <input class="popup_input" type="tel" name="tel" id="tel" placeholder="Телефон">
                             <div>Почта</div>

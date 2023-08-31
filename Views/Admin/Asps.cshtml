@@ -293,7 +293,7 @@
 									<input class="popup_input" name="gnumber" placeholder="Номер группы">
 									<div class="popup_limits">Направление подготовки</div>
 									<select class="popup_input" name="stDir">
-										<option value="null">Выберите направление подготовки</option>
+										<option value="NULL">Выберите направление подготовки</option>
 										@foreach(var dir in ViewBag.UniqueDir)
 										{
 											<option value="@dir.Name">@dir.Name</option>
@@ -305,7 +305,7 @@
 									<input class="popup_input" name="theme" placeholder="Тема работы">
 									<div class="popup_limits">Научный руководитель</div>
 									<select class="popup_input" name="scientist">
-										<option value="null">Выберите научного руководителя</option>
+										<option value="NULL">Выберите научного руководителя</option>
 										@foreach(var scientist in ViewBag.Scientists)
 										{
 											<option value="@scientist.Id">@scientist.Name</option>

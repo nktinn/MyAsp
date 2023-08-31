@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hangfire;
 using Hangfire.MemoryStorage;
-using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -42,10 +41,11 @@ services.AddHangfire(configuration => configuration
 services.AddHangfireServer();
 
 services.AddHsts(options =>
-{
-    options.MaxAge = TimeSpan.FromDays(730); // 2 года
-    options.IncludeSubDomains = true;
-});
+    {
+        options.MaxAge = TimeSpan.FromDays(730); // 2 года
+        options.IncludeSubDomains = true;
+    }
+);
 
 var app = builder.Build();
 

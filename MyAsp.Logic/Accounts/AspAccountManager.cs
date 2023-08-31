@@ -94,6 +94,13 @@ namespace MyAsp.Logic.Accounts
         }
         #endregion
 
+        #region "Запрос научного рук."
+        public Scientist? GetScienceById(int id)
+        {
+            return _context.Scientists.FirstOrDefault(s => s.Id == id);
+        }
+        #endregion
+
         #region "Достижения - общее"
         public async Task AddAchiev(Achievment achiev)
         {

@@ -32,6 +32,10 @@
         public List<Timetable> GetCandidate();
         #endregion
 
+        #region "Запрос научного рук."
+        public Scientist? GetScienceById(int id);
+        #endregion
+
         #region "Достижения - общее"
         public Task AddAchiev(Achievment achiev);
         public Task RemoveAchiev(Achievment achiev);

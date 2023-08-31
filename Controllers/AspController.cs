@@ -189,6 +189,8 @@ namespace MyAsp.Controllers
                 else
                     ViewBag.Message = 0;
                 ViewBag.PM = _aspmngr.OnModeration(account.Id);
+                if (account.ScientistID != null)
+                    ViewBag.Scientist = _aspmngr.GetScienceById((int)account.ScientistID);
                 return View();
             }
         }
@@ -627,8 +629,6 @@ namespace MyAsp.Controllers
         }
 
 
-        /*Private system actions*/
-        
 
 
     }

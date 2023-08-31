@@ -52,7 +52,7 @@ function editProf(button) {
     }
     else {
         const profSelect = popup.querySelector(".popup_input[name='stProf']");
-        profSelect.innerHTML = '<option value="null">Сначала выберите направление подготовки</option>';
+        profSelect.innerHTML = '<option value="NULL">Сначала выберите направление подготовки</option>';
     }
 
     const event = new Event("change");
@@ -220,7 +220,7 @@ directionSelector.addEventListener("change", function () {
 
     const dirText = directionSelector.value;
     const dirBlocks = document.querySelectorAll(".dir-block");
-    profSelect.innerHTML = '<option value="null">Выберите профиль подготовки</option>';
+    profSelect.innerHTML = '<option value="NULL">Выберите профиль подготовки</option>';
     dirBlocks.forEach(block => {
         const dirName = block.querySelector("#name");
         if (dirName.textContent === dirText) {

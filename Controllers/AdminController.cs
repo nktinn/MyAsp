@@ -1491,8 +1491,14 @@ namespace MyAsp.Controllers
                         asp.Patronymic = null;
                     asp.CNumber = cnumber;
                     asp.GNumber = gnumber;
-                    asp.StDirection = stDir;
-                    asp.ProfDirection = stProf;
+                    if (stDir != "NULL")
+                        asp.StDirection = stDir;
+                    else
+                        asp.StDirection = null;
+                    if (stProf != "NULL")
+                        asp.ProfDirection = stProf;
+                    else
+                        asp.ProfDirection = null;
                     asp.WTheme = theme;
                     asp.Phone = tel;
                     asp.Email = mail;
@@ -1711,7 +1717,6 @@ namespace MyAsp.Controllers
 
         /*Private system actions*/
         
-
 
     }
 }

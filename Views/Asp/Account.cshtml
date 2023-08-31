@@ -77,18 +77,30 @@
 									<p style="margin-bottom:20px">@ViewBag.Account.Surname @ViewBag.Account.Name @if(ViewBag.Account.Patronymic != null){@ViewBag.Account.Patronymic}</p>
 									<p><span class="bolder_titles" style="font-style:normal">Удостоверение</span> №@ViewBag.Account.CNumber</p>
 									<p><div class="bolder_titles">Группа:</div> @if(!ViewBag.Account.GNumber.Contains("отпуск")){@ViewBag.Account.GNumber}else{<span style="color:red">@ViewBag.Account.GNumber</span>}</p>
-									<p><div class="bolder_titles">Направление подготовки:</div> @ViewBag.Account.StDirection</p>
-									<p><div class="bolder_titles">Профиль подготовки:</div> @ViewBag.Account.ProfDirection</p>
+									@if(@ViewBag.Account.StDirection != null)
+										{<p><div class="bolder_titles">Направление подготовки:</div> @ViewBag.Account.StDirection</p>}
+									else
+										{<p><div class="bolder_titles">Направление подготовки:</div> Направление еще не назначено</p>}
+									@if(@ViewBag.Account.ProfDirection != null)
+										{<p><div class="bolder_titles">Профиль подготовки:</div> @ViewBag.Account.ProfDirection</p>}
+									else
+										{<p><div class="bolder_titles">Профиль подготовки:</div> Профиль еще не назначен</p>}
 								</div>
 								<div class="personal_science">
-									@if (@ViewBag.Account.ScientistID != null)
+									@if (@ViewBag.Scientist != null)
 									{
-										<p>Научный руководитель</p>
-										<p style="margin-bottom: 7px;">Контакты для связи с науч. рук.</p>
+										<p><div class="bolder_titles" >Научный руководитель:</div> @ViewBag.Scientist.Name, @ViewBag.Scientist.Degree, кафедра @ViewBag.Scientist.Department</p>
+										@if(@ViewBag.Scientist.Phone != null)
+											{<p>Телефон: @ViewBag.Scientist.Phone</p>}
+										else {<p>Телефон руководителя еще не указан</p>}
+										@if(@ViewBag.Scientist.Email != null)
+											{<p style="margin-bottom: 10px;">Эл. почта: @ViewBag.Scientist.Email</p>}
+										else {<p style="margin-bottom: 10px;">Эл. почта руководителя еще не указана</p>}
 									}
-									else {<p>Научный руководитель еще не назначен</p>}
+									else {<p class="bolder_titles">Научный руководитель еще не назначен</p>}
 									@if (@ViewBag.Account.WTheme != null)
-									{<p>Тема работы</p>}
+									{<p class="bolder_titles">Тема работы: @ViewBag.Account.WTheme</p>}
+									else {<p class="bolder_titles">Тема работы еще не указана</p>}
 								</div>
 							</div>
 						</div>
